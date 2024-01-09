@@ -1,0 +1,49 @@
+{
+  "name": "dbm-types",
+  "version": "0.1.0",
+  "description": "Type definitions for Discord Bot Maker by the DBM German community.",
+  "author": "ACertainCoder <acertaincoder@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/DBM-German/DBM-German-Bot/issues"
+  },
+  "homepage": "https://github.com/DBM-German/DBM-German-Bot#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DBM-German/DBM-German-Bot.git"
+  },
+  "keywords": [
+    "discord-bot-maker",
+    "dbm",
+    "german",
+    "discord",
+    "types"
+  ],
+  "type": "module",
+  "exports": {
+    "./dbm-2.1": {
+      "types": "./dbm-2.1.d.ts"
+    }
+  },
+  "scripts": {
+    "lint": "npx eslint ."
+  },
+  "dependencies": {
+    "@discordjs/voice": "latest",
+    "discord-api-types": "latest",
+    "discord.js-13": "npm:discord.js@13",
+    "jimp-0.22": "npm:jimp@0.22",
+    "youtube-dl-exec": "latest",
+    "ytdl-core": "latest"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^6.18.0",
+    "@typescript-eslint/parser": "^6.18.0",
+    "eslint": "^8.56.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-markdownlint": "^0.5.0",
+    "eslint-plugin-n": "^16.6.1",
+    "eslint-plugin-promise": "^6.1.1",
+    "typescript": "^5.3.3"
+  }
+}

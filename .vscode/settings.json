@@ -1,0 +1,9 @@
+{
+    "[markdown]": {
+        "editor.wordWrap": "off",
+        "diffEditor.wordWrap": "off"
+    },
+    "eslint.run": "onSave",
+    "eslint.validate": ["javascript", "typescript", "markdown"],
+    "eslint.format.enable": true
+}

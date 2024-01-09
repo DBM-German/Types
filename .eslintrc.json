@@ -1,0 +1,82 @@
+{
+    "root": true,
+    "env": {
+        "node": true,
+        "browser": true,
+        "es2021": true
+    },
+    "plugins": [
+        "@typescript-eslint",
+        "eslint-plugin-markdownlint",
+        "eslint-plugin-import",
+        "eslint-plugin-promise",
+        "eslint-plugin-n"
+    ],
+    "extends": ["eslint:recommended"],
+    "overrides": [
+        {
+            "files": ["*.ts", "*.d.ts"],
+            "parser": "@typescript-eslint/parser",
+            "parserOptions": {
+                "ecmaVersion": "latest",
+                "sourceType": "module",
+                "project": true,
+                "tsconfigRootDir": "./"
+            },
+            "extends": ["plugin:@typescript-eslint/recommended-type-checked"],
+            "rules": {
+                "indent": ["error", 4],
+                "quotes": ["error", "double"],
+                "semi": ["error", "always"],
+                "no-unused-vars": "off",
+                "@typescript-eslint/no-explicit-any": "off",
+                "@typescript-eslint/no-redundant-type-constituents": "warn"
+            }
+        },
+        {
+            "files": ["*.md"],
+            "parser": "eslint-plugin-markdownlint/parser",
+            "extends": ["plugin:markdownlint/recommended"],
+            "rules": {
+                "markdownlint/md013": ["warn", {
+                    "line_length": 120,
+                    "heading_line_length": 120,
+                    "code_block_line_length": 120,
+                    "stern": true,
+                    "tables": false
+                }],
+                "markdownlint/md024": ["warn", {
+                    "siblings_only": true
+                }],
+                "markdownlint/md029": ["warn", {
+                    "style": "ordered"
+                }],
+                "markdownlint/md044": ["warn", {
+                    "names": [
+                        "Discord Bot Maker",
+                        "DBM",
+                        "DBM German",
+                        "Discord",
+                        "TypeScript",
+                        "JavaScript",
+                        "JSDoc",
+                        "JSON",
+                        "JSONC",
+                        "dbm-",
+                        "discord.js",
+                        "discord-api-types"
+                    ]
+                }],
+                "markdownlint/md046": ["warn", {
+                    "style": "fenced"
+                }],
+                "markdownlint/md048": ["warn", {
+                    "style": "backtick"
+                }],
+                "markdownlint/md050": ["warn", {
+                    "style": "asterisk"
+                }]
+            }
+        }
+    ]
+}
