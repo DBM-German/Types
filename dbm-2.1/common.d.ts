@@ -1,6 +1,9 @@
 import type {
     Snowflake
 } from "discord.js-13";
+import type {
+    Package
+} from "normalize-package-data";
 
 
 /**
@@ -458,4 +461,12 @@ export interface DBMSettingsJSON {
     noDescriptionText: string;
 
     [x: string]: any;
+}
+
+/**
+ * DBM package JSON structure
+ */
+export interface DBMPackage extends Package {
+    main: "bot.js";
+    version: DBMVersion;
 }

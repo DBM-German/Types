@@ -30,6 +30,7 @@
   },
   "dependencies": {
     "@discordjs/voice": "latest",
+    "@types/normalize-package-data": "^2.4.4",
     "discord-api-types": "latest",
     "discord.js-13": "npm:discord.js@13",
     "jimp-0.22": "npm:jimp@0.22",
