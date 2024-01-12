@@ -1,6 +1,6 @@
 {
   "name": "dbm-types",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Type definitions for Discord Bot Maker by the DBM German community.",
   "author": "ACertainCoder <acertaincoder@gmail.com>",
   "license": "MIT",
