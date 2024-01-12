@@ -415,6 +415,8 @@ export interface DBMCommandJSON {
     actions: DBMActionJSON[];
     comType: number;
     description: string;
+
+    [x: string]: any;
 }
 
 /**
@@ -427,4 +429,33 @@ export interface DBMEventJSON {
     temp2?: string;
     "event-type": number;
     actions: DBMActionJSON[];
+
+    [x: string]: any;
+}
+
+/**
+ * DBM settings JSON structure
+ */
+export interface DBMSettingsJSON {
+    token: string;
+    client: Snowflake;
+    tag: string;
+    case: boolean | `${boolean}`;
+    separator: string;
+    commandsOrder: string[];
+    eventsOrder: string[];
+    modules: {[dependency: string]: [string, boolean]};
+    ownerId: string;
+    invalidUserText: string;
+    invalidSelectText: string;
+    invalidButtonText: string;
+    leaveVoiceTimeout: number;
+    slashType: string;
+    slashServers: string;
+    autoResponseText: string;
+    invalidPermissionsText: string;
+    invalidCooldownText: string;
+    noDescriptionText: string;
+
+    [x: string]: any;
 }
