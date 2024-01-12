@@ -466,7 +466,7 @@ export interface DBMSettingsJSON {
 /**
  * DBM package JSON structure
  */
-export interface DBMPackage extends Package {
+export interface DBMPackageJSON extends Package {
     main: "bot.js";
     version: DBMVersion;
 }
