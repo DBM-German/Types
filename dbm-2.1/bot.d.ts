@@ -13,6 +13,7 @@ import type {
     DBMAnyChannelType,
     DBMListType,
     DBMEventObjectType,
+    DBMActionResponseMode,
     DBMUserVariableString,
     DBMMemberVariableString,
     DBMServerVariableString,
@@ -22,7 +23,7 @@ import type {
     DBMRoleVariableString,
     DBMEmojiVariableString,
     DBMVariableString,
-    DBMActionResponseMode,
+    DBMDataFileTypes,
     DBMConvertableItem,
     DBMCommandID,
     DBMActionJSON,
@@ -380,8 +381,8 @@ export interface DBMImages {
  * DBM.Files
  */
 export interface DBMFiles {
-    data: Record<this["dataFiles"][number], any>;
-    writers: Record<this["dataFiles"][number], any>;
+    data: Record<DBMDataFileTypes, any>;
+    writers: Record<DBMDataFileTypes, any>;
     password: string;
 
     readonly crypto: typeof import("node:crypto");
@@ -399,7 +400,7 @@ export interface DBMFiles {
     startBot(): void;
     verifyDirectory(dir: string): boolean;
     readData(callback: () => unknown): void;
-    saveData(file: this["dataFiles"][number], callback: () => unknown): void;
+    saveData(file: DBMDataFileTypes, callback: () => unknown): void;
     initEncryption(): void;
     encrypt(text: string): string;
     decrypt(text: string): string;
