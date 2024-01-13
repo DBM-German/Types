@@ -342,6 +342,52 @@ export type DBMVariableString =
     | DBMEmojiVariableString;
 
 /**
+ * Data file type "commands" (commands.json)
+ */
+export type DBMDataFileTypeCommands = "commands";
+/**
+ * Data file type "events" (events.json)
+ */
+export type DBMDataFileTypeEvents = "events";
+/**
+ * Data file type "settings" (settings.json)
+ */
+export type DBMDataFileTypeSettings = "settings";
+/**
+ * Data file type "players" (players.json)
+ */
+export type DBMDataFileTypePlayers = "players";
+/**
+ * Data file type "servers" (servers.json)
+ */
+export type DBMDataFileTypeServers = "servers";
+/**
+ * Data file type "messages" (messages.json)
+ */
+export type DBMDataFileTypeMessages = "messages";
+/**
+ * Data file type "serverVars" (serverVars.json)
+ */
+export type DBMDataFileTypeServerVars = "serverVars";
+/**
+ * Data file type "globalVars" (globalVars.json)
+ */
+export type DBMDataFileTypeGlobalVars = "globalVars";
+
+/**
+ * Data file types
+ */
+export type DBMDataFileTypes =
+    | DBMDataFileTypeCommands
+    | DBMDataFileTypeEvents
+    | DBMDataFileTypeSettings
+    | DBMDataFileTypePlayers
+    | DBMDataFileTypeServers
+    | DBMDataFileTypeMessages
+    | DBMDataFileTypeServerVars
+    | DBMDataFileTypeGlobalVars;
+
+/**
  * Object that can be converted to a special string representation
  */
 export interface DBMConvertableItem {
