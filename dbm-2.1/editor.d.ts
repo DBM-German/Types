@@ -11,6 +11,7 @@ import type {
     DBMChannelType,
     DBMVoiceChannelType,
     DBMListType,
+    DBMInternalPermissionType,
     DBMInternalDataType,
     DBMActionJSON,
     DBMActionMetaData,
@@ -198,7 +199,7 @@ export interface DBMActionEditorHTMLData {
     lists: FixIndecesArray<string, DBMInternalDataType>;
     members: FixIndecesArray<string, DBMInternalDataType>;
     messages: FixIndecesArray<string, DBMInternalDataType>;
-    permissions: FixIndecesArray<string, 0 | 1 | 2>;
+    permissions: FixIndecesArray<string, DBMInternalPermissionType>;
     roles: FixIndecesArray<string, DBMInternalDataType>;
     sendReplyTargets: FixIndecesArray<string, DBMInternalDataType>;
     sendTargets: FixIndecesArray<string, DBMInternalDataType>;

@@ -271,6 +271,17 @@ export type DBMConditionType = 0 | 1 | 2 | 3 | 4 | 99;
 export type DBMEventObjectType = 1 | 2 | 3 | 4 | 100 | 200;
 
 /**
+ * Internal permission type
+ *
+ * | ID | Name                      |
+ * |----|---------------------------|
+ * | 0  | Channel permissions       |
+ * | 1  | Voice channel permissions |
+ * | 2  | Any channel permissions   |
+ */
+export type DBMInternalPermissionType = 0 | 1 | 2;
+
+/**
  * Response mode for interactions
  * 
  * | ID            | Name                     |
