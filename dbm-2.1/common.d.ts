@@ -388,6 +388,16 @@ export type DBMDataFileTypes =
     | DBMDataFileTypeGlobalVars;
 
 /**
+ * Internal data type
+ * 
+ * | ID | Name    |
+ * |----|---------|
+ * | 0  | Command |
+ * | 1  | Event   |
+ */
+export type DBMInternalDataType = 0 | 1;
+
+/**
  * Object that can be converted to a special string representation
  */
 export interface DBMConvertableItem {
