@@ -11,6 +11,7 @@ import type {
     DBMChannelType,
     DBMVoiceChannelType,
     DBMListType,
+    DBMInternalDataType,
     DBMActionJSON,
     DBMActionMetaData,
     DBMCommandJSON,
@@ -177,6 +178,7 @@ export interface DBMActionEditorGlobalObject extends DBMEditorSharedGlobalObject
 
     /** All available variables (name and storage type) */
     varLists: FixIndecesArray<[ string, string ][], DBMInternalVarType>;
+    htmlData: DBMActionEditorHTMLData;
 
     simpleVersion: DBMSimpleVersion;
     version: DBMVersion;
@@ -184,6 +186,26 @@ export interface DBMActionEditorGlobalObject extends DBMEditorSharedGlobalObject
     getVariableList(): HTMLDataListElement;
 
     [x: string]: any;
+}
+
+/**
+ * Action Editor: HTML data
+ */
+export interface DBMActionEditorHTMLData {
+    anyChannels: FixIndecesArray<string, DBMInternalDataType>;
+    channels: FixIndecesArray<string, DBMInternalDataType>;
+    conditions: FixIndecesArray<string, 0>;
+    lists: FixIndecesArray<string, DBMInternalDataType>;
+    members: FixIndecesArray<string, DBMInternalDataType>;
+    messages: FixIndecesArray<string, DBMInternalDataType>;
+    permissions: FixIndecesArray<string, 0 | 1 | 2>;
+    roles: FixIndecesArray<string, DBMInternalDataType>;
+    sendReplyTargets: FixIndecesArray<string, DBMInternalDataType>;
+    sendTargets: FixIndecesArray<string, DBMInternalDataType>;
+    servers: FixIndecesArray<string, DBMInternalDataType>;
+    threadChannels: FixIndecesArray<string, DBMInternalDataType>;
+    variables: FixIndecesArray<string, DBMInternalDataType>;
+    voiceChannels: FixIndecesArray<string, DBMInternalDataType>;
 }
 
 /**

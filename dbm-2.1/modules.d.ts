@@ -14,6 +14,7 @@ import type {
 } from "./bot.d.ts";
 import type {
     DBMActionEditorWindow,
+    DBMActionEditorHTMLData,
     DBMActionEditorFormatters,
     DBMEditorModHelpers,
     DBMEditorPresetsInputNames,
@@ -117,10 +118,10 @@ export interface DBMAction extends DBMModule {
      * so edit the HTML to reflect this.
      *
      * @param isEvent Whether action is in an event or not
-     * @param data JSON data
+     * @param data HTML data
      * @returns HTML
      */
-    html(isEvent: boolean, data: DBMActionJSON): string;
+    html(isEvent: boolean, data: DBMActionEditorHTMLData): string;
 
     /**
      * Action Editor Pre-Init Code
