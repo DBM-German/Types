@@ -249,7 +249,7 @@ export interface DBMActions {
     convertTextToEmojis(text: string, useRegional: boolean): string;
     getFlagEmoji(flagName: string): `${this["_letterEmojis"][number]}${this["_letterEmojis"][number]}`;
     getCustomEmoji(nameOrId: Snowflake): Emoji | undefined;
-    eval(content: string, cache: DBMActionsCache, logError: boolean): any;
+    eval(content: string, cache: DBMActionsCache, logError?: boolean): any;
     evalMessage(content: string, cache: DBMActionsCache): string;
     evalIfPossible(content: string, cache: DBMActionsCache): any;
     initMods(): void;
@@ -301,7 +301,7 @@ export interface DBMActions {
     storeValue(value: unknown, type: DBMVarType, varName: string, cache: DBMActionsCache): void;
     executeResults(result: boolean, data: DBMActionBranchJSON, cache: DBMActionsCache): void;
     executeSubActionsThenNextAction(actions: DBMActionJSON[], cache: DBMActionsCache): void;
-    executeSubActions(actions: DBMActionJSON[], cache: DBMActionsCache, callback?: () => void): void;
+    executeSubActions(actions: DBMActionJSON[], cache: DBMActionsCache, callback?: (...args: unknown[]) => unknown): void;
     generateSubCache(cache: DBMActionsCache, actions: DBMActionJSON[]): DBMActionsCache;
     generateButton(button: { id: string, name: string, type: string, url: string, emoji: string }, cache: DBMActionsCache): MessageButtonOptions;
     generateSelectMenu(select: { id: string, mode: DBMActionResponseMode, placeholder: string, min: string, max: string, options: { label: string, description: string, value: string }[] }, cache: DBMActionsCache): MessageSelectMenuOptions;
@@ -310,11 +310,11 @@ export interface DBMActions {
     addSelectToActionRowArray(array: BaseMessageComponentOptions[][], rowText: string, selectData: MessageSelectMenuOptions, cache: DBMActionsCache): void;
     addTextInputToActionRowArray(array: BaseMessageComponentOptions[][], rowText: string, textInput: TextInputComponentOptions, cache: DBMActionsCache): void;
     checkTemporaryInteractionResponses(interaction: Interaction): boolean;
-    registerTemporaryInteraction(messageId: Snowflake, time: number, customId: string, userId: Snowflake, multi: boolean, interactionCallback: (interaction: Interaction) => void): void;
+    registerTemporaryInteraction(messageId: Snowflake, time: number, customId: string, userId: Snowflake, multi: boolean, interactionCallback: (interaction: Interaction, ...args: unknown[]) => unknown): void;
     removeTemporaryInteraction(messageId: Snowflake, uniqueOrCustomId: string | number): void;
     clearTemporaryInteraction(messageId: Snowflake, customId: string): void;
     clearAllTemporaryInteractions(messageId: Snowflake): void;
-    registerModalSubmitResponses(interactionId: Snowflake, callback: (interaction: Interaction) => void): void;
+    registerModalSubmitResponses(interactionId: Snowflake, callback: (interaction: Interaction, ...args: unknown[]) => unknown): void;
     checkModalSubmitResponses(interaction: ModalSubmitInteraction): void;
 
     [x: string]: any;
