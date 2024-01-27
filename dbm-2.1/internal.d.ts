@@ -7,6 +7,11 @@
 export type FixIndecesArray<T, K extends keyof T[]> = Pick<T[],K> & Omit<never[],K>;
 
 /**
+ * Object with keys based on an union type and different value types per key
+ */
+export type UnionObject<T extends string | number | symbol, R extends Record<T, unknown>> = { [x in T]: R[x] };
+
+/**
  * Type of a record entry
  */
 export type TypeFromRecord<T extends keyof R, R extends Record<string | number | symbol, unknown>> = R[T];
