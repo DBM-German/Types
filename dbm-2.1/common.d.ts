@@ -271,6 +271,86 @@ export type DBMConditionType = 0 | 1 | 2 | 3 | 4 | 99;
 export type DBMEventObjectType = 1 | 2 | 3 | 4 | 100 | 200;
 
 /**
+ * Command type
+ *
+ * | ID  | Name                 |
+ * |-----|----------------------|
+ * | 0   | Text Command         |
+ * | 1   | Includes Word        |
+ * | 2   | Regular Expression   |
+ * | 3   | Any Message          |
+ * | 4   | Slash Command        |
+ * | 5   | User Menu Command    |
+ * | 6   | Message Menu Command |
+ */
+export type DBMCommandType = 0 | 1 | 2 | 3 | 4 | 5 | 6;
+
+/**
+ * Event type
+ *
+ * | ID | Name                          |
+ * |----|-------------------------------|
+ * | 0  | None                          |
+ * | 1  | Bot Per-Server Initialization |
+ * | 2  | Any Message (Deprecated)      |
+ * | 3  | On Interval                   |
+ * | 4  | Bot Join Server               |
+ * | 5  | Bot Leave Server              |
+ * | 6  | Member Join Server            |
+ * | 7  | Member Leave Server           |
+ * | 8  | Channel Create                |
+ * | 9  | Channel Delete                |
+ * | 10 | Role Create                   |
+ * | 11 | Role Delete                   |
+ * | 12 | Member Banned                 |
+ * | 13 | Member Unbanned               |
+ * | 14 | Voice Channel Create          |
+ * | 15 | Voice Channel Delete          |
+ * | 16 | Emoji Create                  |
+ * | 17 | Emoji Delete                  |
+ * | 18 | Message Deleted               |
+ * | 19 | Server Update                 |
+ * | 20 | Member Update                 |
+ * | 21 | Presence Update               |
+ * | 22 | Member Voice Update           |
+ * | 23 | Channel Update                |
+ * | 24 | Channel Pins Update           |
+ * | 25 | Role Update                   |
+ * | 26 | Message Update                |
+ * | 27 | Emoji Update                  |
+ * | 28 | Message Reaction Added        |
+ * | 29 | Message Reaction Removed      |
+ * | 30 | All Message Reactions Removed |
+ * | 31 | Member Becomes Available      |
+ * | 32 | Member Chunk Received         |
+ * | 33 | Member Starts/Stops Speaking  |
+ * | 34 | User Typing Starts            |
+ * | 35 | User Typing Stops             |
+ * | 36 | Server Becomes Unavailable    |
+ * | 37 | On Bot Error                  |
+ * | 38 | On Time Restricted Command    |
+ * | 39 | Special Channel Create        |
+ * | 40 | Special Channel Delete        |
+ * | 41 | Sticker Create                |
+ * | 42 | Sticker Delete                |
+ * | 43 | Thread Create                 |
+ * | 44 | Thread Delete                 |
+ * | 45 | Sticker Update                |
+ * | 46 | Thread Update                 |
+ * | 47 | Thread Member Update          |
+ * | 48 | Bot One-Time Initialization   |
+ * | 49 | Invite Created                |
+ * | 50 | Invite Delete                 |
+ */
+export type DBMEventType =
+    | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+    | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19
+    | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29
+    | 30 | 31 | 32 | 33 | 34 | 35 | 36 | 37 | 38 | 39
+    | 40 | 41 | 42 | 43 | 44 | 45 | 46 | 47 | 48 | 49
+    | 50; // Could be optimized via a possible future numeric range type, see https://github.com/microsoft/TypeScript/issues/54925
+
+/**
  * Internal permission type
  *
  * | ID | Name                      |
@@ -298,6 +378,15 @@ export type DBMActionResponseMode =
     | "MULTIPERSONAL"
     | "MULTI"
     | "PERSISTENT"
+
+/**
+ * Creation mode for slash commands
+ */
+export type DBMSlashCommandCreationMode =
+    | "all"
+    | "global"
+    | "manual"
+    | "manualglobal";
 
 /**
  * String representation of an user variable value (saved variable)
@@ -524,7 +613,7 @@ export interface DBMCommandJSON {
     permissions2: string;
     restriction: number;
     actions: DBMActionJSON[];
-    comType: number;
+    comType: DBMCommandType;
     description: string;
 
     [x: string]: any;
@@ -538,7 +627,7 @@ export interface DBMEventJSON {
     name: string;
     temp?: string;
     temp2?: string;
-    "event-type": number;
+    "event-type": DBMEventType;
     actions: DBMActionJSON[];
 
     [x: string]: any;
@@ -561,7 +650,7 @@ export interface DBMSettingsJSON {
     invalidSelectText: string;
     invalidButtonText: string;
     leaveVoiceTimeout: number;
-    slashType: string;
+    slashType: DBMSlashCommandCreationMode;
     slashServers: string;
     autoResponseText: string;
     invalidPermissionsText: string;
