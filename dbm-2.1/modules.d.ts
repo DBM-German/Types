@@ -1,7 +1,7 @@
 import type {
     DBMVarType,
     DBMActionJSON,
-    DBMActionMetaData,
+    DBMActionMetadata,
     DBMExtensionJSON,
     DBMCommandJSON,
     DBMEventJSON
@@ -75,7 +75,7 @@ export interface DBMAction extends DBMModule {
      * It's highly recommended "preciseCheck" is set to false for third-party mods.
      * This will make it so the patch version (0.0.X) is not checked.
      */
-    readonly meta: DBMActionMetaData;
+    readonly meta: DBMActionMetadata;
 
     /**
      * Action Fields

@@ -578,9 +578,9 @@ export interface DBMActionBranchJSON {
 }
 
 /**
- * DBM action metainfo
+ * DBM actions cache metadata
  */
-export interface DBMActionMeta {
+export interface DBMActionsCacheMetadata {
     isEvent: boolean;
     name: string;
 }
@@ -588,7 +588,7 @@ export interface DBMActionMeta {
 /**
  * DBM action metadata
  */
-export interface DBMActionMetaData {
+export interface DBMActionMetadata {
     version: string;
     preciseCheck: boolean;
     author?: string;

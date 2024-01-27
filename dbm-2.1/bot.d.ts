@@ -32,7 +32,7 @@ import type {
     DBMCommandID,
     DBMActionJSON,
     DBMActionBranchJSON,
-    DBMActionMeta,
+    DBMActionsCacheMetadata,
     DBMCommandJSON,
     DBMEventJSON,
     DBMSettingsJSON
@@ -751,7 +751,7 @@ export interface DBMActions {
      * @param initialTempVars Initial temp variables
      * @param meta Command for `meta` properties in actions cache
      */
-    invokeInteraction(interaction: Interaction, actions: DBMActionJSON[], initialTempVars?: DBMVariables, meta?: DBMActionMeta): void;
+    invokeInteraction(interaction: Interaction, actions: DBMActionJSON[], initialTempVars?: DBMVariables, meta?: DBMActionsCacheMetadata): void;
     /**
      * Start an event action sequence
      * @param event Event for action sequence and `meta` properties in actions cache
@@ -1065,6 +1065,7 @@ export interface DBMActions {
      * @param cache Parent actions cache
      * @param actions Sub action sequence
      * @returns Sub actions cache
+     * @see {@link DBMActionsCache.extend}
      */
     generateSubCache(cache: DBMActionsCache, actions: DBMActionJSON[]): DBMActionsCache;
     /**
@@ -1165,25 +1166,65 @@ export interface DBMActions {
  * DBM.Actions.ActionsCache
  */
 export class DBMActionsCache {
-    constructor(actions: DBMActionJSON[], server: Guild, options?: { index?: number, temp?: DBMVariables, msg?: Message, interaction?: Interaction, isSubCache?: boolean, meta?: DBMActionMeta });
+    constructor(actions: DBMActionJSON[], server: Guild, options?: { index?: number, temp?: DBMVariables, msg?: Message, interaction?: Interaction, isSubCache?: boolean, meta?: DBMActionsCacheMetadata });
 
+    /** Action sequence */
     actions: DBMActionJSON[];
+    /** Current server */
     server: Guild;
+    /** Action index */
     index: number;
+    /** Temp variables */
     temp: DBMVariables;
+    /** Command message */
     msg: Message;
+    /** Interaction */
     interaction: Interaction;
+    /** Sub actions cache indicator */
     isSubCache: boolean;
-    meta: { isEvent: boolean, name: string };
+    /** Actions cache meta */
+    meta: DBMActionsCacheMetadata;
 
+    /**
+     * Callback from sub action sequence to parent action sequence
+     */
     callback?(): void;
+    /**
+     * Callback for main action sequence
+     * @see {@link onMainCacheCompleted}
+     */
     onCompleted?(): void;
+    /**
+     * Handle action sequence end
+     * @see {@link DBMActions.getDefaultResponseText}
+     */
     onMainCacheCompleted(): void;
+    /**
+     * Get command user
+     */
     getUser(): User;
+    /**
+     * Get command message
+     */
     getMessage(): Message | null;
+    /**
+     * Go to action anchor
+     * @param anchorName Anchor name
+     * @see {@link DBMActions.callNextAction}
+     */
     goToAnchor(anchorName: string): void;
+    /**
+     * Convert to string
+     * @returns Info about the command or event
+     */
     toString(): string;
 
+    /**
+     * Create sub actions cache with some values applied from the parent actions cache
+     * @param other Parent actions cache
+     * @param actions Sub action sequence
+     * @returns Sub actions cache
+     */
     static extend(other: DBMActionsCache, actions: DBMActionJSON[]): DBMActionsCache;
 }
 

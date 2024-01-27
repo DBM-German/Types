@@ -14,7 +14,7 @@ import type {
     DBMInternalPermissionType,
     DBMInternalDataType,
     DBMActionJSON,
-    DBMActionMetaData,
+    DBMActionMetadata,
     DBMCommandJSON,
     DBMEventJSON
 } from "./common.d.ts";
@@ -168,7 +168,7 @@ export interface DBMActionEditorGlobalObject extends DBMEditorSharedGlobalObject
     /** Project action file names */
     actions: Record<string, string>;
     /** Project action metadata */
-    metaActions: Record<string, DBMActionMetaData>;
+    metaActions: Record<string, DBMActionMetadata>;
     /** Project action sections */
     sections: Record<string, string>;
     /** Project action display names */
