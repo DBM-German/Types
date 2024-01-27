@@ -13,6 +13,8 @@ import type {
     DBMAnyChannelType,
     DBMListType,
     DBMEventObjectType,
+    DBMEventType,
+    DBMSlashCommandCreationMode,
     DBMUserVariableString,
     DBMMemberVariableString,
     DBMServerVariableString,
@@ -163,67 +165,362 @@ export interface DBMBot {
 
     /** Discord client */
     bot: Client;
+    /** Application commands that get registered */
     applicationCommandData: ApplicationCommandData[];
+    /** Whether the bot has the GUILD_MEMBERS intent */
     hasMemberIntents: boolean;
+    /** Whether the bot has the MESSAGE_CONTENT intent */
     hasMessageContentIntents: boolean;
+    /** Regex for the tag / prefix of the bot */
     tagRegex: ReturnType<this["generateTagRegex"]>;
 
+    /** Slash command creation mode */
+    _slashCommandCreateType: DBMSlashCommandCreationMode;
+    /** Slash command server list */
+    _slashCommandServerList: Snowflake[];
+
+    /** Privileged Discord intents */
     readonly PRIVILEGED_INTENTS: number;
+    /** Non-privileged Discord intents */
     readonly NON_PRIVILEGED_INTENTS: number;
+    /** All Discord intents */
     readonly ALL_INTENTS: number;
 
+    /**
+     * Initialize everything and login to Discord
+     */
     init(): void;
+    /**
+     * Initialize discord.js client
+     */
     initBot(): void;
+    /**
+     * Create discord.js client options (can be overwritten by modules to set custom options)
+     */
     makeClientOptions(): void;
+    /**
+     * Get Discord intents (can be overwritten by modules to set custom intents)
+     */
     intents(): void;
+    /**
+     * Check whether to use partials or not (can be overwritten by modules to change settings)
+     */
     usePartials(): void;
+    /**
+     * Get Discord partials (can be overwritten by modules to set custom partials)
+     */
     partials(): PartialTypes[];
+    /**
+     * Setup internal event handling
+     * @see {@link onRawData}
+     */
     setupBot(): void;
+    /**
+     * Handle raw data from the Discord API
+     * @param packet Socket packet
+     */
     onRawData(packet: GatewayDispatchPayload): void;
+    /**
+     * Setup commands and events based on their respective data file contents
+     * @see {@link reformatCommands}
+     * @see {@link reformatEvents}
+     */
     reformatData(): void;
+    /**
+     * Setup commands based on their data file content
+     */
     reformatCommands(): void;
+    /**
+     * Convert DBM command to application command
+     * @param com Command
+     * @param name Command name
+     * @returns Application command
+     * @see {@link generateSlashCommandDescription}
+     * @see {@link validateSlashCommandParameters}
+     */
     createApiJsonFromCommand(com: DBMCommandJSON, name: string): ApplicationCommandData;
+    /**
+     * Create sub commands for application command
+     * @param names Sub command names
+     * @param data Application command data
+     * @see {@link getNoDescriptionText}
+     */
     mergeSubCommandIntoCommandData(names: string[], data: ApplicationCommandSubCommandData): void;
+    /**
+     * Check whether the slash command name is valid
+     * @param name Command name
+     * @returns Command name parts (splitted by one or more spaces) or `false` if invalid
+     * @see {@link validateSlashCommandParameterName}
+     */
     validateSlashCommandName(name: string): string[] | false;
+    /**
+     * Check whether the slash command parameter name is valid
+     * @param name Command parameter name
+     * @returns Truncated lowercase parameter name or `false` if invalid
+     */
     validateSlashCommandParameterName(name: string): Lowercase<string> | false;
+    /**
+     * Generate description for slash command
+     * @param com Command
+     * @returns Command description
+     * @see {@link validateSlashCommandDescription}
+     */
     generateSlashCommandDescription(com: DBMCommandJSON): string;
+    /**
+     * Check whether the slash command description is valid
+     * @param desc Command description
+     * @returns Truncated description or default description if not present
+     * @see {@link getNoDescriptionText}
+     */
     validateSlashCommandDescription(desc?: string): string;
+    /**
+     * Get configured command default description
+     * @returns Text from settings
+     */
     getNoDescriptionText(): string;
+    /**
+     * Check whether the slash command parameters are valid
+     * @param parameters Command parameters
+     * @param commandName Command name
+     * @returns Filtered and sorted command parameters
+     * @see {@link validateSlashCommandParameterName}
+     * @see {@link validateSlashCommandDescription}
+     */
     validateSlashCommandParameters(parameters: ApplicationCommandOptionData[], commandName: string): ApplicationCommandOptionData[];
+    /**
+     * Setup events based on their data file content
+     */
     reformatEvents(): void;
+    /**
+     * Prepare action sequence by calling the `modInit` function for each action in the sequence
+     * @param actions Action sequence
+     */
     prepareActions(actions: DBMActionJSON[]): void;
-    registerButtonInteraction(interactionId: Snowflake, data: DBMSelectData): void;
+    /**
+     * Register button interaction
+     * @param interactionId Interaction id
+     * @param data Button data
+     */
+    registerButtonInteraction(interactionId: Snowflake, data: DBMButtonData): void;
+    /**
+     * Register select menu interaction
+     * @param interactionId Interaction id
+     * @param data Select data
+     */
     registerSelectMenuInteraction(interactionId: Snowflake, data: DBMSelectData): void;
+    /**
+     * Check whether the bot is configured appropriately to run its commands (outputs errors to the console if not)
+     */
     checkForCommandErrors(): void;
+    /**
+     * Setup event handlers
+     * @see {@link onReady}
+     * @see {@link onServerJoin}
+     * @see {@link onMessage}
+     * @see {@link onInteraction}
+     * @see {@link DBMEvents.registerEvents}
+     */
     initEvents(): void;
+    /**
+     * Login to Discord
+     */
     login(): void;
+    /**
+     * Handle the `ready` event
+     * @see {@link restoreVariables}
+     * @see {@link registerApplicationCommands}
+     * @see {@link preformInitialization}
+     */
     onReady(): void;
+    /**
+     * Restore saved server and global variables
+     * @see {@link DBMFiles.restoreServerVariables}
+     * @see {@link DBMFiles.restoreGlobalVariables}
+     */
     restoreVariables(): void;
+    /**
+     * Register application commands based on the configured mode in the settings
+     * @see {@link setAllServerCommands}
+     * @see {@link setGlobalCommands}
+     * @see {@link setCertainServerCommands}
+     * @see {@link _slashCommandCreateType}
+     * @see {@link _slashCommandServerList}
+     */
     registerApplicationCommands(): void;
+    /**
+     * Handle the `guildCreate` event
+     * @param guild Server
+     * @see {@link initializeCommandsForNewServer}
+     */
     onServerJoin(guild: Guild): void;
+    /**
+     * Initialize slash commands for new server
+     * @param guild Server
+     * @see {@link setCommandsForServer}
+     * @see {@link _slashCommandCreateType}
+     * @see {@link _slashCommandServerList}
+     */
     initializeCommandsForNewServer(guild: Guild): void;
+    /**
+     * Check whether command scope errors are enabled in the settings
+     * @returns Configured state
+     */
     shouldPrintAnyMissingAccessError(): boolean;
+    /**
+     * Check whether command removal for unlisted servers are enabled in the settings
+     * @returns Configured state
+     */
     clearUnspecifiedServerCommands(): boolean;
+    /**
+     * Set global application commands
+     * @param commands Application commands
+     */
     setGlobalCommands(commands: ApplicationCommandData[]): void;
+    /**
+     * Set server application commands
+     * @param guild Server
+     * @param commands Application commands
+     * @param printMissingAccessError Whether to output missing access errors to the console
+     */
     setCommandsForServer(guild: Guild, commands: ApplicationCommandData[], printMissingAccessError: boolean): void;
-    setAllServerCommands(commands: ApplicationCommandData[], printMissingAccessError: boolean): void;
+    /**
+     * Set server application commands for all servers individually
+     * @param commands Application commands
+     * @param printMissingAccessError Whether to output missing access errors to the console (default: `true`)
+     * @see {@link setCommandsForServer}
+     */
+    setAllServerCommands(commands: ApplicationCommandData[], printMissingAccessError?: boolean): void;
+    /**
+     * Set server application commands for the specified servers
+     * @param commands Application commands
+     * @param serverIdList Server ids
+     * @see {@link clearUnspecifiedServerCommands}
+     * @see {@link setCommandsForServer}
+     */
     setCertainServerCommands(commands: ApplicationCommandData[], serverIdList: Snowflake[]): void;
+    /**
+     * Trigger initialization events and setup intervals
+     * - Bot Per-Server Initialization
+     * - Bot One-Time Initialization
+     * - On Interval
+     * @see {@link DBMEvents.onInitialization}
+     * @see {@link DBMEvents.onInitializationOnce}
+     * @see {@link DBMEvents.setupIntervals}
+     */
     preformInitialization(): void;
+    /**
+     * Handle the `messageCreate` event
+     * @param msg Message
+     * @see {@link checkCommand}
+     * @see {@link onAnyMessage}
+     */
     onMessage(msg: Message): void;
+    /**
+     * Check whether the message is a text command and invoke its action sequence if so
+     * @param msg Message
+     * @return Whether the message is a text command
+     * @see {@link checkTag}
+     * @see {@link DBMActions.preformActionsFromMessage}
+     */
     checkCommand(msg: Message): boolean;
+    /**
+     * Escape regex characters
+     * @param text Text to escape
+     * @return Escaped text
+     */
     escapeRegExp(text: string): string;
+    /**
+     * Generate a regex for the tag / prefix of the bot
+     * @param tag Prefix
+     * @param allowPrefixSpace Allow spaces between the prefix and command name
+     * @see {@link escapeRegExp}
+     */
     generateTagRegex(tag: string, allowPrefixSpace: boolean): RegExp;
-    populateTagRegex(): RegExp;
+    /**
+     * Populate the `tagRegex` property with a regex if not done already
+     * @returns Regex if freshly populated
+     * @see {@link generateTagRegex}
+     * @see {@link tagRegex}
+     */
+    populateTagRegex(): ReturnType<this["generateTagRegex"]> | void;
+    /**
+     * Check whether the message starts with the tag / prefix of the bot
+     * @param content Message content
+     * @returns Command name if the message matches the configured criteria
+     * @see {@link populateTagRegex}
+     */
     checkTag(content: string): string | null;
+    /**
+     * Check whether the message is an "Includes Word" or "Regular Expression" command and invoke their actions if so,
+     * plus the "Any Message" commands (and deprecated events) always
+     * @param msg Message
+     * @see {@link checkIncludes}
+     * @see {@link checkRegExps}
+     * @see {@link DBMEvents.callEvents}
+     * @see {@link DBMActions.preformActionsFromMessage}
+     */
     onAnyMessage(msg: Message): void;
+    /**
+     * Check whether the message is an "Includes Word" command and invoke its action sequence if so
+     * @param msg Message
+     * @see {@link DBMActions.preformActionsFromMessage}
+     */
     checkIncludes(msg: Message): void;
+    /**
+     * Check whether the message is an "Regular Expression" command and invoke its action sequence if so
+     * @param msg Message
+     * @see {@link DBMActions.preformActionsFromMessage}
+     */
     checkRegExps(msg: Message): void;
+    /**
+     * Handle the `interactionCreate` event
+     * @param interaction Interaction
+     * @see {@link onSlashCommandInteraction}
+     * @see {@link onContextMenuInteraction}
+     * @see {@link onButtonInteraction}
+     * @see {@link onSelectMenuInteraction}
+     * @see {@link DBMActions.checkModalSubmitResponses}
+     * @see {@link DBMActions.checkTemporaryInteractionResponses}
+     */
     onInteraction(interaction: Interaction): void;
+    /**
+     * Handle slash commands
+     * @param interaction Command interaction
+     * @see {@link preformActionsFromInteraction}
+     */
     onSlashCommandInteraction(interaction: CommandInteraction): void;
+    /**
+     * Handle context menu commands
+     * @param interaction Context menu interaction
+     * @see {@link onUserContextMenuInteraction}
+     * @see {@link onMessageContextMenuInteraction}
+     */
     onContextMenuInteraction(interaction: ContextMenuInteraction): void;
+    /**
+     * Handle user context menu commands
+     * @param interaction User context menu interaction
+     * @see {@link DBMActions.preformActionsFromInteraction}
+     */
     onUserContextMenuInteraction(interaction: UserContextMenuInteraction): void;
+    /**
+     * Handle message context menu commands
+     * @param interaction Message context menu interaction
+     * @see {@link DBMActions.preformActionsFromInteraction}
+     */
     onMessageContextMenuInteraction(interaction: MessageContextMenuInteraction): void;
+    /**
+     * Handle button
+     * @param interaction Button interaction
+     * @see {@link DBMActions.preformActionsFromInteraction}
+     * @see {@link DBMActions.getInvalidButtonResponseText}
+     */
     onButtonInteraction(interaction: ButtonInteraction): void;
+    /**
+     * Handle select menu
+     * @param interaction Select menu interaction
+     * @see {@link DBMActions.preformActionsFromInteraction}
+     * @see {@link DBMActions.getInvalidSelectResponseText}
+     */
     onSelectMenuInteraction(interaction: SelectMenuInteraction): void;
 }
 
@@ -898,13 +1195,13 @@ export interface DBMEvents {
 
     generateData(): [keyof ClientEvents, DBMVarType, DBMVarType, DBMEventObjectType, boolean, ((arg1: unknown, arg2: unknown) => boolean) | null | undefined][];
     registerEvents(bot: Client): void;
-    callEvents(id: `${number}`, temp1: DBMVarType, temp2: DBMVarType, server: DBMEventObjectType, mustServe: boolean, condition: ((arg1: unknown, arg2: unknown) => boolean) | null | undefined, arg1: unknown, arg2: unknown): void;
-    getObject(id: DBMEventObjectType, arg1: unknown, arg2: unknown): TypeFromRecord<typeof id, { 1: unknown, 2: Guild, 3: unknown, 4: Guild, 100: Guild, 200: User }>;
+    callEvents(id: `${DBMEventType}`, temp1: DBMVarType, temp2: DBMVarType, server: DBMEventObjectType, mustServe: boolean, condition: ((arg1: unknown, arg2: unknown) => boolean) | null | undefined, arg1: unknown, arg2: unknown): void;
+    getObject(id: DBMEventObjectType, arg1: unknown, arg2: unknown): TypeFromRecord<typeof id, UnionObject<DBMEventObjectType, { 1: any, 2: Guild, 3: any, 4: Guild, 100: Guild, 200: User }>>;
     onInitialization(bot: Client): void;
     onInitializationOnce(bot: Client): void;
     setupIntervals(bot: Client): void;
-    onReaction(id: `${number}`, reaction: MessageReaction, user: User): void;
-    onTyping(id: `${number}`, channel: Channel, user: User): void;
+    onReaction(id: `${28 | 29}`, reaction: MessageReaction, user: User): void;
+    onTyping(id: `${34}`, channel: Channel, user: User): void;
     onError(text: string, text2: string, cache: DBMActionsCache): void;
 }
 
