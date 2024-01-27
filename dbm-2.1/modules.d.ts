@@ -211,6 +211,8 @@ export interface DBMAction extends DBMModule {
      *
      * @param this DBM bot context
      * @param data Command or event JSON data
+     * @param customData Custom data for the action sequence that is currently prepared
+     * @param index Action index (zero-based)
      */
     modInit?(this: DBMBot, data: DBMCommandJSON | DBMEventJSON, customData: Record<string, any>, index: number): void;
 
