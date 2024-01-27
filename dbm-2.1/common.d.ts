@@ -416,6 +416,47 @@ export interface DBMConvertableItem {
 }
 
 /**
+ * Button data
+ */
+export interface DBMButtonData {
+    id: string;
+    name: string;
+    type: string;
+    url: string;
+    emoji: string;
+}
+
+/**
+ * Select data
+ */
+export interface DBMSelectData {
+    id: string;
+    mode: DBMActionResponseMode;
+    placeholder: string;
+    min: string;
+    max: string;
+    options: {
+        label: string,
+        description: string,
+        value: string
+    }[];
+}
+
+/**
+ * Text input data
+ */
+export interface DBMTextInputData {
+    id: string;
+    mode: DBMActionResponseMode;
+    name: string;
+    placeholder: string;
+    minLength: string;
+    maxLength: string;
+    style: string;
+    required: string;
+}
+
+/**
  * ID for commands consisting of five characters from A-Z, uppercase and lowercase
  */
 export type DBMCommandID = string;
