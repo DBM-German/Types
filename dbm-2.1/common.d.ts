@@ -1,4 +1,7 @@
 import type {
+    RegularOrDefault
+} from "./internal.d.ts";
+import type {
     Snowflake
 } from "discord.js-13";
 import type {
@@ -498,9 +501,43 @@ export type DBMDataFileTypes =
 export type DBMInternalDataType = 0 | 1;
 
 /**
+ * Objects that have data associated to them
+ */
+export interface DBMDataAccess {
+    /**
+     * Get data
+     * @param name Data name
+     * @param defaultValue Default value
+     * @returns Data value
+     */
+    data<D>(name: string, defaultValue?: D): RegularOrDefault<any, D>;
+    /**
+     * Set data
+     * @param name Data name
+     * @param value Data value
+     */
+    setData(name: string, value: unknown): void;
+    /**
+     * Add data
+     * @param name Data name
+     * @param value Data value
+     */
+    addData(name: string, value: unknown): void;
+    /**
+     * Clear data
+     * @param name Data name
+     */
+    clearData(name: string): void;
+}
+
+/**
  * Object that can be converted to a special string representation
  */
 export interface DBMConvertableItem {
+    /**
+     * Convert to variable string
+     * @returns Variable string
+     */
     convertToString(): DBMVariableString;
 }
 

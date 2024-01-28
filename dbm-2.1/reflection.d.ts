@@ -7,11 +7,9 @@ import type {
     DBMVoiceChannelVariableString,
     DBMRoleVariableString,
     DBMEmojiVariableString,
+    DBMDataAccess,
     DBMConvertableItem
 } from "./common.d.ts";
-import type {
-    RegularOrDefault
-} from "./internal.d.ts";
 
 
 export type * as Discord from "discord.js-13";
@@ -24,24 +22,30 @@ export type * as YouTubeDL from "youtube-dl-exec";
 
 // Custom structures
 declare module "discord.js-13" {
-    interface DBMDataAccess {
-        data<D>(name: string, defaultValue?: D): RegularOrDefault<any, D>;
-        setData(name: string, value: unknown): void;
-        addData(name: string, value: unknown): void;
-        clearData(name: string): void;
-    }
-
     export interface User extends DBMDataAccess, DBMConvertableItem {
         convertToString(): DBMUserVariableString;
     }
 
     export interface GuildMember extends DBMDataAccess, DBMConvertableItem {
+        /**
+         * Unban member
+         * @param server Server
+         * @param reason Reason
+         */
         unban(server: Guild, reason: string): ReturnType<this["guild"]["bans"]["remove"]>;
         convertToString(): DBMMemberVariableString;
     }
 
     export interface Guild extends DBMDataAccess, DBMConvertableItem {
+        /**
+         * Get default channel
+         * @returns Channel
+         */
         getDefaultChannel(): Channel | undefined;
+        /**
+         * Get default voice channel
+         * @returns Voice channel
+         */
         getDefaultVoiceChannel(): VoiceChannel | undefined;
         convertToString(): DBMServerVariableString;
     }
@@ -51,6 +55,10 @@ declare module "discord.js-13" {
     }
 
     export interface TextChannel extends DBMConvertableItem {
+        /**
+         * Start thread
+         * @returns Thread channel
+         */
         startThread(): ReturnType<this["threads"]["create"]>;
         convertToString(): DBMTextChannelVariableString;
     }
