@@ -43,6 +43,7 @@ import type {
     DBMExtension // eslint-disable-line @typescript-eslint/no-unused-vars
 } from "./modules.d.ts";
 import type {
+    FixIndecesArray,
     UnionObject,
     TypeFromRecord,
     OnceOrArray,
@@ -191,11 +192,11 @@ export interface DBMBot {
      */
     init(): void;
     /**
-     * Initialize discord.js client
+     * Initialize Discord client
      */
     initBot(): void;
     /**
-     * Create discord.js client options (can be overwritten by modules to set custom options)
+     * Create Discord client options (can be overwritten by modules to set custom options)
      */
     makeClientOptions(): void;
     /**
@@ -1232,17 +1233,87 @@ export class DBMActionsCache {
  * DBM.Events
  */
 export interface DBMEvents {
+    /** Event data */
     data: ReturnType<this["generateData"]>;
 
-    generateData(): [keyof ClientEvents, DBMVarType, DBMVarType, DBMEventObjectType, boolean, ((arg1: unknown, arg2: unknown) => boolean) | null | undefined][];
+    /**
+     * Generate event data
+     * 1. Discord client event name
+     * 2. Event object type for first variable
+     * 3. Event object type for second variable
+     * 4. Event object type for current server
+     * 5. First or second event argument must serve a server
+     * 6. Custom condition
+     * @see {@link data}
+     */
+    generateData(): FixIndecesArray<[keyof ClientEvents, DBMEventObjectType, DBMEventObjectType, DBMEventObjectType, boolean, ((arg1: unknown, arg2: unknown) => boolean) | null | undefined], DBMEventType>;
+    /**
+     * Setup event handlers for DBM events
+     * @param bot Discord client
+     */
     registerEvents(bot: Client): void;
-    callEvents(id: `${DBMEventType}`, temp1: DBMVarType, temp2: DBMVarType, server: DBMEventObjectType, mustServe: boolean, condition: ((arg1: unknown, arg2: unknown) => boolean) | null | undefined, arg1: unknown, arg2: unknown): void;
+    /**
+     * Call DBM events of the given type
+     * @param id Event type
+     * @param temp1 Event object type for first variable
+     * @param temp2 Event object type for second variable
+     * @param server Event object type for current server
+     * @param mustServe First or second event argument must serve a server
+     * @param condition Custom condition
+     * @param arg1 First event argument
+     * @param arg2 Second event argument
+     * @see {@link data}
+     * @see {@link DBMActions.invokeEvent}
+     */
+    callEvents(id: `${DBMEventType}`, temp1: DBMEventObjectType, temp2: DBMEventObjectType, server: DBMEventObjectType, mustServe: boolean, condition: ((arg1: unknown, arg2: unknown) => boolean) | null | undefined, arg1: unknown, arg2: unknown): void;
+    /**
+     * Get object from event arguments
+     * @param id Event object type
+     * @param arg1 First event argument
+     * @param arg2 Second event argument
+     */
     getObject(id: DBMEventObjectType, arg1: unknown, arg2: unknown): TypeFromRecord<typeof id, UnionObject<DBMEventObjectType, { 1: any, 2: Guild, 3: any, 4: Guild, 100: Guild, 200: User }>>;
+    /**
+     * Handle per-server initialization
+     * @param bot Discord client
+     * @see {@link DBMActions.invokeEvent}
+     */
     onInitialization(bot: Client): void;
+    /**
+     * Handle one-time initialization
+     * @param bot Discord client
+     * @see {@link DBMActions.invokeEvent}
+     */
     onInitializationOnce(bot: Client): void;
+    /**
+     * Setup intervals
+     * @param bot Discord client
+     * @see {@link DBMActions.invokeEvent}
+     */
     setupIntervals(bot: Client): void;
-    onReaction(id: `${28 | 29}`, reaction: MessageReaction, user: User): void;
-    onTyping(id: `${34}`, channel: Channel, user: User): void;
+    /**
+     * Handle reactions
+     * @param id Event type
+     * @param reaction Reaction
+     * @param user User
+     * @see {@link DBMActions.invokeEvent}
+     */
+    onReaction(id: `${Extract<DBMEventType, 28 | 29>}`, reaction: MessageReaction, user: User): void;
+    /**
+     * Handle user typing
+     * @param id Event type
+     * @param channel Channel
+     * @param user User
+     * @see {@link DBMActions.invokeEvent}
+     */
+    onTyping(id: `${Extract<DBMEventType, 34>}`, channel: Channel, user: User): void;
+    /**
+     * Handle bot error
+     * @param text DBM error text
+     * @param text2 JavaScript error text
+     * @param cache Source actions cache
+     * @see {@link DBMActions.invokeEvent}
+     */
     onError(text: string, text2: string, cache: DBMActionsCache): void;
 }
 
@@ -1252,10 +1323,37 @@ export interface DBMEvents {
 export interface DBMImages {
     readonly JIMP: Jimp;
 
+    /**
+     * Create image from web URL or local path
+     * @param url URL or path
+     * @returns Image
+     */
     getImage(url: string): ReturnType<typeof Jimp.read>;
+    /**
+     * Load font from local path
+     * @param url Path
+     * @returns Font
+     */
     getFont(url: string): ReturnType<typeof Jimp.loadFont>;
+    /**
+     * Check whether an object is an image
+     * @param obj Object to check
+     * @returns Whether it is an image
+     */
     isImage(obj: unknown): obj is Jimp;
+    /**
+     * Get buffer for image
+     * @param image Image
+     * @returns Buffer
+     */
     createBuffer(image: Jimp): ArrayBuffer;
+    /**
+     * Draw image on another one
+     * @param img1 Base image
+     * @param img2 Overlay image
+     * @param x Position on the x-axis
+     * @param y Position on the y-axis
+     */
     drawImageOnImage(img1: Jimp, img2: Jimp, x: number, y: number): void;
 }
 
@@ -1263,6 +1361,7 @@ export interface DBMImages {
  * DBM.Files
  */
 export interface DBMFiles {
+    /** Bot data */
     data: UnionObject<DBMDataFileTypes, {
         commands: [null, ...DBMCommandJSON[]],
         events: [null, ...DBMEventJSON[]],
@@ -1270,13 +1369,16 @@ export interface DBMFiles {
         players: Record<Snowflake, any>,
         servers: Record<Snowflake, any>,
         messages: Record<Snowflake, any>,
-        serverVars: any,
-        globalVars: any
+        serverVars: Record<Snowflake, DBMVariables>,
+        globalVars: DBMVariables
     }>;
+    /** Data writers (fstorm) */
     writers: Record<DBMDataFileTypes, any>;
+    /** Data password */
     password: string;
 
     readonly crypto: typeof import("node:crypto");
+    /** Bot data files */
     readonly dataFiles: [
         "commands.json",
         "events.json",
@@ -1288,27 +1390,163 @@ export interface DBMFiles {
         "globalVars.json",
     ];
 
+    /**
+     * Start the bot (entry point)
+     * @see {@link verifyDirectory}
+     * @see {@link DBMActions.initMods}
+     * @see {@link readData}
+     */
     startBot(): void;
+    /**
+     * Check if a directory exists
+     * @param dir Directory path
+     * @returns Whether it exists
+     */
     verifyDirectory(dir: string): boolean;
+    /**
+     * Read data files
+     * @param callback Callback for when all data is read
+     * @see {@link decrypt}
+     */
     readData(callback: () => unknown): void;
+    /**
+     * Save data file
+     * @param file File type
+     * @param callback Callback for when the data is written
+     * @see {@link encrypt}
+     */
     saveData(file: DBMDataFileTypes, callback: () => unknown): void;
+    /**
+     * Retrieves the data password
+     */
     initEncryption(): void;
+    /**
+     * Encrypts text
+     * @param text Decrypted text
+     * @returns Encrypted text
+     */
     encrypt(text: string): string;
+    /**
+     * Decrypts text
+     * @param text Encrypted text
+     * @returns Decrypted text
+     */
     decrypt(text: string): string;
+    /**
+     * Convert an item to a variable string for storing in a data file
+     * @param item Item to store
+     * @returns Variable string
+     * @see {@link DBMConvertableItem.convertToString}
+     */
     convertItem(item: DBMConvertableItem | object | boolean | number | bigint | string | symbol): string | null;
+    /**
+     * Save a server variable in the corresponding data file
+     * @param serverId Server id
+     * @param varName Variable name
+     * @param item Variable value
+     * @see {@link saveData}
+     */
     saveServerVariable(serverId: Snowflake, varName: string, item: Parameters<this["convertItem"]>[0]): void;
+    /**
+     * Restore all server variables in the corresponding data file
+     * @see {@link restoreVariable}
+     */
     restoreServerVariables(): void;
+    /**
+     * Save a global variable in the corresponding data file
+     * @param varName Variable name
+     * @param item Variable value
+     * @see {@link saveData}
+     */
     saveGlobalVariable(varName: string, item: Parameters<this["convertItem"]>[0]): void;
+    /**
+     * Restore all global variables in the corresponding data file
+     * @see {@link restoreVariable}
+     */
     restoreGlobalVariables(): void;
-    restoreVariable(value: Parameters<this["restoreValue"]>[0], type: DBMVarType, varName: string, serverId: Snowflake): void;
+    /**
+     * Restore a variable in its original location
+     * @param value Variable value
+     * @param type Variable type
+     * @param varName Variable name
+     * @param serverId Server id
+     * @see {@link restoreValue}
+     * @see {@link DBMActions.storeValue}
+     */
+    restoreVariable(value: Parameters<this["restoreValue"]>[0], type: DBMVarType, varName: string, serverId?: Snowflake): void;
+    /**
+     * Convert a variable string back to an usable item
+     * @param value Variable string
+     * @param bot Discord client
+     * @returns Restored item
+     * @throws Failed to fetch data
+     * @see {@link restoreMember}
+     * @see {@link restoreMessage}
+     * @see {@link restoreTextChannel}
+     * @see {@link restoreVoiceChannel}
+     * @see {@link restoreRole}
+     * @see {@link restoreServer}
+     * @see {@link restoreEmoji}
+     * @see {@link restoreUser}
+     * @see {@link restoreValue}
+     */
     restoreValue<T extends OnceOrArray<unknown>>(value: T, bot: Client): Promise<OnceOrArray<T extends OnceOrArray<DBMVariableString> ? GuildMember | Message | Channel | Role | Guild | Emoji | User | null : boolean | number | bigint | string | symbol | null>>;
+    /**
+     * Convert a variable string back to a member
+     * @param value Variable string
+     * @param bot Discord client
+     * @returns Member if present
+     */
     restoreMember(value: DBMMemberVariableString, bot: Client): GuildMember | null;
+    /**
+     * Convert a variable string back to a message
+     * @param value Variable string
+     * @param bot Discord client
+     * @returns Message if present
+     * @throws Failed to fetch message
+     */
     restoreMessage(value: DBMMessageVariableString, bot: Client): Promise<Message> | null;
+    /**
+     * Convert a variable string back to a channel
+     * @param value Variable string
+     * @param bot Discord client
+     * @returns Channel if present
+     */
     restoreTextChannel(value: DBMTextChannelVariableString, bot: Client): Channel | null;
+    /**
+     * Convert a variable string back to a voice channel
+     * @param value Variable string
+     * @param bot Discord client
+     * @returns Voice channel if present
+     */
     restoreVoiceChannel(value: DBMVoiceChannelVariableString, bot: Client): Channel | null;
+    /**
+     * Convert a variable string back to a role
+     * @param value Variable string
+     * @param bot Discord client
+     * @returns Role if present
+     */
     restoreRole(value: DBMRoleVariableString, bot: Client): Role | null;
+    /**
+     * Convert a variable string back to a server
+     * @param value Variable string
+     * @param bot Discord client
+     * @returns Server if present
+     */
     restoreServer(value: DBMServerVariableString, bot: Client): Guild | null;
+    /**
+     * Convert a variable string back to an emoji
+     * @param value Variable string
+     * @param bot Discord client
+     * @returns Emoji if present
+     */
     restoreEmoji(value: DBMEmojiVariableString, bot: Client): Emoji | null;
+    /**
+     * Convert a variable string back to an user
+     * @param value Variable string
+     * @param bot Discord client
+     * @returns User if present
+     */
     restoreUser(value: DBMUserVariableString, bot: Client): User | null;
 }
 
@@ -1319,21 +1557,74 @@ export interface DBMAudio {
     ytdl: typeof import("ytdl-core");
     voice: typeof import("@discordjs/voice");
     rawYtdl: typeof import("youtube-dl-exec");
+    /** Audio subscriptions */
     subscriptions: Record<string, DBMAudioSubscription>;
 
+    /** Audio subscription */
     readonly Subscription: DBMAudioSubscription;
+    /** Audio track */
     readonly Track: DBMAudioTrack;
+    /** Basic audio track */
     readonly BasicTrack: DBMAudioBasicTrack;
 
+    /**
+     * Check if the given audio dependency is installed
+     * @param key Dependency name
+     * @returns Whether it is installed
+     */
     checkIfHasDependency(key: string): boolean;
-    connectToVoice(voiceChannel: VoiceBasedChannel): DBMAudioSubscription | undefined;
+    /**
+     * Connect to voice channel
+     * @param voiceChannel Voice channel
+     * @returns Audio subscription if a new one is created
+     */
+    connectToVoice(voiceChannel: VoiceBasedChannel): DBMAudioSubscription | void;
+    /**
+     * Get an audio subscription for the given server and connect to voice channel if needed
+     * @param guild Server
+     * @returns Audio subscription
+     */
     getSubscription(guild: Guild): DBMAudioSubscription;
+    /**
+     * Disconnect from voice channel
+     * @param guild Server
+     */
     disconnectFromVoice(guild: Guild): void;
+    /**
+     * Set volume
+     * @param volume Volume
+     * @param guild Server
+     */
     setVolume(volume: number, guild: Guild): void;
+    /**
+     * Handle incoming audio
+     * @param info Audio info
+     * @param guild Server
+     * @param isQueue Whether to add it to the queue or play it immediately
+     */
     addAudio(info: DBMAudioInfo, guild: Guild, isQueue: boolean): Promise<void>;
+    /**
+     * Add audio to the queue
+     * @param info Audio info
+     * @param guild Server
+     */
     addToQueue(info: DBMAudioInfo, guild: Guild): Promise<void>;
+    /**
+     * Play audio immediately
+     * @param info Audio info
+     * @param guild Server
+     */
     playImmediately(info: DBMAudioInfo, guild: Guild): Promise<void>;
+    /**
+     * Clear queue
+     * @param cache Actions cache
+     */
     clearQueue(cache: DBMActionsCache): void;
+    /**
+     * Get audio track
+     * @param url Web URL or local path
+     * @param type Audio type
+     */
     getTrack(url: string, type: DBMAudioType): DBMAudioTrack | DBMAudioBasicTrack;
 }
 
@@ -1341,15 +1632,32 @@ export interface DBMAudio {
  * DBM.Audio.Subscription
  */
 export class DBMAudioSubscription extends PlayerSubscription {
+    /** Voice connection */
     voiceConnection: VoiceConnection;
+    /** Audio player */
     audioPlayer: AudioPlayer;
+    /** Audio queue */
     queue: DBMAudioTrack[];
+    /** Audio volume */
     volume: number;
+    /** Audio bitrate */
     bitrate: number;
 
     constructor(voiceConnection: VoiceConnection);
-    enqueue(track: DBMAudioTrack, beginning: boolean): void;
+    /**
+     * Enqueue audio track
+     * @param track Audio track
+     * @param beginning Add to the beginning or end of the queue
+     * @see {@link processQueue}
+     */
+    enqueue(track: DBMAudioTrack, beginning?: boolean): void;
+    /**
+     * Stop audio player
+     */
     stop(): void;
+    /**
+     * Process queue (e.g. play next track, leave channel, ...)
+     */
     processQueue(): Promise<void>;
 }
 
@@ -1357,10 +1665,15 @@ export class DBMAudioSubscription extends PlayerSubscription {
  * DBM.Audio.Track
  */
 export class DBMAudioTrack {
+    /** YouTube URL */
     urL: string;
+    /** Track title */
     title: string;
 
     constructor(data: { url: string, title: string });
+    /**
+     * Create audio resource
+     */
     createAudioResource(): Promise<AudioResource>;
 
     static from(url: string): Promise<DBMAudioTrack>;
@@ -1370,8 +1683,12 @@ export class DBMAudioTrack {
  * DBM.Audio.BasicTrack
  */
 export class DBMAudioBasicTrack {
+    /** Web URL or local path */
     urL: string;
 
     constructor(data: { url: string });
+    /**
+     * Create audio resource
+     */
     createAudioResource(): AudioResource;
 }
