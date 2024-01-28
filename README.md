@@ -4,12 +4,12 @@ Type definitions for [Discord Bot Maker] by the DBM German community.
 
 ## Supported versions
 
-| DBM version | Types       | JSDoc          |
-|-------------|-------------|----------------|
-| 2.1         | ✅ Done    | 🕒 In progress |
-| 1.6         | ❌ Missing | ❌ Missing     |
-| 1.5         | ❌ Missing | ❌ Missing     |
-| 1.4         | ❌ Missing | ❌ Missing     |
+| DBM version | Types       | JSDoc      |
+|-------------|-------------|------------|
+| 2.1         | ✅ Done    | ✅ Done    |
+| 1.6         | ❌ Missing | ❌ Missing |
+| 1.5         | ❌ Missing | ❌ Missing |
+| 1.4         | ❌ Missing | ❌ Missing |
 
 ## How to use
 
