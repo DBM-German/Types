@@ -45,7 +45,6 @@ import type {
 import type {
     FixIndecesArray,
     UnionObject,
-    TypeFromRecord,
     OnceOrArray,
     RegularOrDefault
 } from "./internal.d.ts";
@@ -1272,7 +1271,7 @@ export interface DBMEvents {
      * @param arg1 First event argument
      * @param arg2 Second event argument
      */
-    getObject(id: DBMEventObjectType, arg1: unknown, arg2: unknown): TypeFromRecord<typeof id, UnionObject<DBMEventObjectType, { 1: any, 2: Guild, 3: any, 4: Guild, 100: Guild, 200: User }>>;
+    getObject(id: DBMEventObjectType, arg1: unknown, arg2: unknown): UnionObject<DBMEventObjectType, { 1: any, 2: Guild, 3: any, 4: Guild, 100: Guild, 200: User }>[typeof id];
     /**
      * Handle per-server initialization
      * @param bot Discord client
