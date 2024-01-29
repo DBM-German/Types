@@ -579,7 +579,7 @@ export interface DBMActions {
      * @returns Values returned by the called functions
      * @example
      * const members = [...server.members.cache.values()];
-     * this.callListFunc(member, "setNickname", ["nickname", "reason"]).then(() => {
+     * this.callListFunc(members, "setNickname", ["nickname", "reason"]).then(() => {
      *     this.callNextAction(cache);
      * });
      */
