@@ -103,7 +103,7 @@ export interface DBMAction extends DBMModule {
      * Stores the relevant variable info for the editor.
      *
      * @param data JSON data
-     * @param varType DBM variable type
+     * @param varType DBM variable type selected by the user
      * @returns Variable name and data type
      */
     variableStorage?(data: DBMActionJSON, varType: DBMVarType): [ string, string ];
