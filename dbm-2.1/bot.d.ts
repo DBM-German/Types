@@ -822,7 +822,7 @@ export interface DBMActions {
      * @param err Error
      * @see {@link getErrorString}
      */
-    displayError(data: DBMActionJSON, cache: DBMActionsCache, err: Error): void;
+    displayError(data: DBMActionJSON, cache: DBMActionsCache, err: Error | string): void;
     /**
      * Get value from command interaction parameter
      * @param interaction Command interaction
