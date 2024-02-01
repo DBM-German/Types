@@ -652,7 +652,7 @@ export interface DBMActions {
      * Attempts to evaluate the content via {@link eval}, using {@link evalMessage} as a fallback or returning the original content if both fail
      * @param content Content to evaluate
      * @param cache Actions cache
-     * @returns Evaluation result or `false` if an error in both cases occurred
+     * @returns Evaluation result or `false` if an error occurred in both cases
      */
     evalIfPossible(content: string, cache: DBMActionsCache): any;
     /**
