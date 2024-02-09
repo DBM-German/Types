@@ -18,6 +18,8 @@ export type * as DiscordVoice from "@discordjs/voice";
 export type { default as Jimp } from "jimp-0.22";
 export type { default as Ytdl } from "ytdl-core";
 export type * as YouTubeDL from "youtube-dl-exec";
+export type { default as Electron } from "electron";
+export type * as ElectronRemote from "@electron/remote";
 
 
 // Custom structures

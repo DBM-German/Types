@@ -43,6 +43,7 @@ import type {
     DBMExtension // eslint-disable-line @typescript-eslint/no-unused-vars
 } from "./modules.d.ts";
 import type {
+    PickAsyncFunctions,
     FixIndecesArray,
     UnionObject,
     OnceOrArray,
@@ -572,7 +573,7 @@ export interface DBMActions {
      */
     getDBM(): DBM;
     /**
-     * Call function for each item in the given list
+     * Call an async function for each item in the given list
      * @param list Items that provide the specified function
      * @param funcName Name of the function to call
      * @param args Parameters for the function call
@@ -583,7 +584,7 @@ export interface DBMActions {
      *     this.callNextAction(cache);
      * });
      */
-    callListFunc<Item, Args>(list: Item[], funcName: keyof Item & ((...args: Args[]) => unknown), args: Args[]): Promise<ReturnType<typeof funcName>>;
+    callListFunc<Item, FuncName extends keyof PickAsyncFunctions<Item>, Args>(list: readonly Item[], funcName: FuncName, args?: readonly Args[]): Item[FuncName] extends (...args: Args[]) => Promise<unknown> ? ReturnType<Item[FuncName]> : never;
     /**
      * Template function for `tempVars`, `serverVars` and `globalVars`
      * @param this The `this` context is expected to be a variable container
@@ -1245,7 +1246,7 @@ export interface DBMEvents {
      * 6. Custom condition
      * @see {@link data}
      */
-    generateData(): FixIndecesArray<[keyof ClientEvents, DBMEventObjectType, DBMEventObjectType, DBMEventObjectType, boolean, ((arg1: unknown, arg2: unknown) => boolean) | null | undefined], DBMEventType>;
+    generateData(): FixIndecesArray<DBMEventType, [keyof ClientEvents, DBMEventObjectType, DBMEventObjectType, DBMEventObjectType, boolean, ((arg1: unknown, arg2: unknown) => boolean) | null | undefined][]>;
     /**
      * Setup event handlers for DBM events
      * @param bot Discord client

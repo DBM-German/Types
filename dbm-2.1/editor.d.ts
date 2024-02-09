@@ -11,6 +11,8 @@ import type {
     DBMChannelType,
     DBMVoiceChannelType,
     DBMListType,
+    DBMPermissionType,
+    DBMPermissionStringType,
     DBMInternalPermissionType,
     DBMInternalDataType,
     DBMActionJSON,
@@ -19,7 +21,8 @@ import type {
     DBMEventJSON
 } from "./common.d.ts";
 import type {
-    FixIndecesArray
+    FixIndecesArray,
+    TypedArray
 } from "./internal.d.ts";
 import type {
     DBMEditorPlaceholderTranslationElementID,
@@ -39,10 +42,88 @@ export type DBMAlternativeTexts = { defaultText: string, options: { button: stri
 export type DBMEditorPresetType = string | DBMAlternativeTexts;
 
 /**
+ * Permissions configuration
+ */
+export interface DBMPermissionsConfig {
+    /** Permission list (names and descriptions) */
+    Permissions: FixIndecesArray<DBMPermissionType, TypedArray<[DBMPermissionStringType, string], [
+        ["VIEW_CHANNEL", "View channels"],
+        ["MANAGE_CHANNELS", "Manage channels"],
+        ["MANAGE_ROLES", "Manage roles"],
+        ["MANAGE_EMOJIS_AND_STICKERS", "Manage emojis and stickers"],
+        ["VIEW_AUDIT_LOG", "View audit log"],
+        ["VIEW_GUILD_INSIGHTS", "View Server Insights"],
+        ["MANAGE_WEBHOOKS", "Manage webhooks"],
+        ["MANAGE_GUILD", "Manage server"],
+        ["CREATE_INSTANT_INVITE", "Create invite"],
+        ["CHANGE_NICKNAME", "Change nickname"],
+        ["MANAGE_NICKNAMES", "Manage nicknames"],
+        ["KICK_MEMBERS", "Kick members"],
+        ["BAN_MEMBERS", "Ban members"],
+        ["MODERATE_MEMBERS", "Time out members"],
+        ["SEND_MESSAGES", "Send messages"],
+        ["SEND_MESSAGES_IN_THREADS", "Send messages in threads"],
+        ["USE_PUBLIC_THREADS", "Create public threads"],
+        ["USE_PRIVATE_THREADS", "Create private threads"],
+        ["EMBED_LINKS", "Embed links"],
+        ["ATTACH_FILES", "Attach files"],
+        ["ADD_REACTIONS", "Add reactions"],
+        ["USE_EXTERNAL_EMOJIS", "Use external emojis"],
+        ["USE_EXTERNAL_STICKERS", "Use External Stickers"],
+        ["MENTION_EVERYONE", "Mention @everyone, @here and all roles"],
+        ["MANAGE_MESSAGES", "Manage messages"],
+        ["READ_MESSAGE_HISTORY", "Read message history"],
+        ["SEND_TTS_MESSAGES", "Send text-to-speech messages"],
+        ["USE_APPLICATION_COMMANDS", "Use Application Commands"],
+        ["CONNECT", "Connect"],
+        ["SPEAK", "Speak"],
+        ["STREAM", "Video"],
+        ["USE_VAD", "Use Voice Activity Detection"],
+        ["PRIORITY_SPEAKER", "Priority Speaker"],
+        ["MUTE_MEMBERS", "Mute members"],
+        ["DEAFEN_MEMBERS", "Defean members"],
+        ["MOVE_MEMBERS", "Move members"],
+        ["ADMINISTRATOR", "Administrator"],
+        ["REQUEST_TO_SPEAK", "Request to speak"],
+        ["MANAGE_THREADS", "Manage threads"],
+        ["MANAGE_EVENTS", "Manage Events"]
+    ]>>;
+    /** Text channel permissions (ids) */
+    TextChannelPermissions: TypedArray<DBMPermissionType, [ 0, 1, 6, 8, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 38, 25, 26, 27 ]>;
+    /** Voice channel permissions (ids) */
+    VoiceChannelPermissions: TypedArray<DBMPermissionType, [ 0, 1, 8, 28, 29, 30, 31, 32, 33, 34, 35, 39 ]>;
+}
+
+/**
+ * Window options
+ */
+export interface DBMWindowOptions {
+    height: number;
+    width: number;
+    icon: string;
+    minimizable: boolean;
+    modal: boolean;
+    resizable: boolean;
+    show: boolean;
+    useContentSize: boolean;
+    webPreferences: {
+        allowRunningInsecureContent: boolean,
+        contextIsolation: boolean,
+        enableRemoteModule: boolean,
+        nodeIntegration: boolean,
+        spellcheck: boolean
+    };
+    parent: any;
+}
+
+export interface DBMDialogOptions extends DBMWindowOptions {
+}
+
+/**
  * Preset lists and functions
  */
 export interface DBMEditorPresetsInputNames {
-    variables: FixIndecesArray<string, DBMVarType>;
+    variables: FixIndecesArray<DBMVarType, string[]>;
     sendTargets: DBMEditorPresetType[];
     sendReplyTargets: DBMEditorPresetType[];
     members: DBMEditorPresetType[];
@@ -215,11 +296,90 @@ export interface DBMEditorTranslationManager {
     translatePlaceholder(elementID: DBMEditorPlaceholderTranslationElementID, translation: string): void;
 }
 
+/**
+ * Shared window
+ */
 export interface DBMEditorSharedWindow extends Window {
     /** Global object */
     readonly glob: DBMEditorSharedGlobalObject;
     /** Translation manager */
     readonly TranslationManager: DBMEditorTranslationManager;
+
+    /**
+     * Encrypt raw string
+     * @param decrypted Decrypted string
+     * @returns Encrypted string
+     */
+    globalRawEncrypt(decrypted: string): string;
+    /**
+     * Decrypt raw string
+     * @param encrypted Encrypted string
+     * @returns Decrypted string
+     */
+    globalRawDecrypt(encrypted: string): string;
+    /**
+     * Get permission configuration
+     * @returns Permission config
+     */
+    globalGetPermissionsConfig(): DBMPermissionsConfig;
+    /**
+     * Display alert message
+     * @param message Message
+     * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/Window/alert}
+     */
+    globalAlert(message: string): void;
+    /**
+     * Display confirmation message
+     * @param message Message
+     * @returns Whether the OK (`true`) or Cancel (`false`) was selected
+     * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/Window/confirm}
+     */
+    globalConfirm(message: string): boolean;
+    /**
+     * Get clipboard content
+     * @returns Content (empty string if clipboard is empty)
+     */
+    globalGetClipboard(): string;
+    /**
+     * Set clipboard content
+     * @param content Content
+     */
+    globalSetClipboard(content: string): void;
+    /**
+     * Open a link in the default browser
+     * @param url Link to open
+     */
+    globalOpenLink(url: string): void;
+    /**
+     * Open window
+     * @param path Relative path
+     * @param options Window options
+     * @param context Window context
+     */
+    globalOpenWindow(path: string, options: DBMDialogOptions, context: unknown): void;
+    /**
+     * Open dialog
+     * @param path Relative or path
+     * @param options Dialog options
+     * @param context Dialog context
+     */
+    globalOpenDialog(path: string, options: DBMDialogOptions, context: unknown): void;
+    /**
+     * Open context menu
+     * @param menu Context menu element
+     * @param clientX X-axis screen position
+     * @param clientY Y-axis screen position
+     */
+    globalOpenMenu(menu: HTMLElement, clientX: number, clientY: number): void;
+    /**
+     * Display quit dialog
+     */
+    globalQuit(): void;
+    /**
+     * Get Electron remote
+     * @returns Remote
+     */
+    globalGetRemote(): typeof import("@electron/remote");
 
     [x: string]: any;
 }
@@ -391,7 +551,7 @@ export interface DBMActionEditorGlobalObject extends DBMEditorSharedGlobalObject
     isEvent: boolean;
 
     /** All available variables (name and storage type) */
-    varLists: FixIndecesArray<[string, string][], DBMInternalVarType>;
+    varLists: FixIndecesArray<DBMInternalVarType, [string, string][][]>;
     /** HTML data for variable type selections */
     htmlData: DBMActionEditorHTMLData;
 
@@ -412,33 +572,33 @@ export interface DBMActionEditorGlobalObject extends DBMEditorSharedGlobalObject
  */
 export interface DBMActionEditorHTMLData {
     /** Any channels */
-    anyChannels: FixIndecesArray<string, DBMInternalDataType>;
+    anyChannels: FixIndecesArray<DBMInternalDataType, string[]>;
     /** Channels */
-    channels: FixIndecesArray<string, DBMInternalDataType>;
+    channels: FixIndecesArray<DBMInternalDataType, string[]>;
     /** Conditions */
-    conditions: FixIndecesArray<string, 0>; // Only one item that contains both branches (true/false) and all possible behaviours
+    conditions: FixIndecesArray<0, string[]>; // Only one item that contains both branches (true/false) and all possible behaviours
     /** Lists */
-    lists: FixIndecesArray<string, DBMInternalDataType>;
+    lists: FixIndecesArray<DBMInternalDataType, string[]>;
     /** Members */
-    members: FixIndecesArray<string, DBMInternalDataType>;
+    members: FixIndecesArray<DBMInternalDataType, string[]>;
     /** Messages */
-    messages: FixIndecesArray<string, DBMInternalDataType>;
+    messages: FixIndecesArray<DBMInternalDataType, string[]>;
     /** Permissions */
-    permissions: FixIndecesArray<string, DBMInternalPermissionType>;
+    permissions: FixIndecesArray<DBMInternalPermissionType, string[]>;
     /** Roles */
-    roles: FixIndecesArray<string, DBMInternalDataType>;
+    roles: FixIndecesArray<DBMInternalDataType, string[]>;
     /** Send reply targets */
-    sendReplyTargets: FixIndecesArray<string, DBMInternalDataType>;
+    sendReplyTargets: FixIndecesArray<DBMInternalDataType, string[]>;
     /** Send targets */
-    sendTargets: FixIndecesArray<string, DBMInternalDataType>;
+    sendTargets: FixIndecesArray<DBMInternalDataType, string[]>;
     /** Servers */
-    servers: FixIndecesArray<string, DBMInternalDataType>;
+    servers: FixIndecesArray<DBMInternalDataType, string[]>;
     /** Thread channels */
-    threadChannels: FixIndecesArray<string, DBMInternalDataType>;
+    threadChannels: FixIndecesArray<DBMInternalDataType, string[]>;
     /** Variables */
-    variables: FixIndecesArray<string, DBMInternalDataType>;
+    variables: FixIndecesArray<DBMInternalDataType, string[]>;
     /** Voice channels */
-    voiceChannels: FixIndecesArray<string, DBMInternalDataType>;
+    voiceChannels: FixIndecesArray<DBMInternalDataType, string[]>;
 }
 
 /**

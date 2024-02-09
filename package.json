@@ -30,9 +30,11 @@
   },
   "dependencies": {
     "@discordjs/voice": "latest",
+    "@electron/remote": "^2.1.2",
     "@types/normalize-package-data": "^2.4.4",
     "discord-api-types": "latest",
     "discord.js-13": "npm:discord.js@13",
+    "electron": "^28.2.2",
     "jimp-0.22": "npm:jimp@0.22",
     "youtube-dl-exec": "latest",
     "ytdl-core": "latest"

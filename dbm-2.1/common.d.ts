@@ -351,7 +351,152 @@ export type DBMEventType =
     | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29
     | 30 | 31 | 32 | 33 | 34 | 35 | 36 | 37 | 38 | 39
     | 40 | 41 | 42 | 43 | 44 | 45 | 46 | 47 | 48 | 49
-    | 50; // Could be optimized via a possible future numeric range type, see https://github.com/microsoft/TypeScript/issues/54925
+    | 50;
+// Could be optimized via a possible future numeric range type, see https://github.com/microsoft/TypeScript/issues/54925
+
+/**
+ * Permission type
+ *
+ * | ID | Name                       | Description                              |
+ * |----|----------------------------|------------------------------------------|
+ * | -1 | NONE                       | No permission                            |
+ * | 0  | VIEW_CHANNEL               | View channels                            |
+ * | 1  | MANAGE_CHANNELS            | Manage channels                          |
+ * | 2  | MANAGE_ROLES               | Manage roles                             |
+ * | 3  | MANAGE_EMOJIS_AND_STICKERS | Manage emojis and stickers               |
+ * | 4  | VIEW_AUDIT_LOG             | View audit log                           |
+ * | 5  | VIEW_GUILD_INSIGHTS        | View Server Insights                     |
+ * | 6  | MANAGE_WEBHOOKS            | Manage webhooks                          |
+ * | 7  | MANAGE_GUILD               | Manage server                            |
+ * | 8  | CREATE_INSTANT_INVITE      | Create invite                            |
+ * | 9  | CHANGE_NICKNAME            | Change nickname                          |
+ * | 10 | MANAGE_NICKNAMES           | Manage nicknames                         |
+ * | 11 | KICK_MEMBERS               | Kick members                             |
+ * | 12 | BAN_MEMBERS                | Ban members                              |
+ * | 13 | MODERATE_MEMBERS           | Time out members                         |
+ * | 14 | SEND_MESSAGES              | Send messages                            |
+ * | 15 | SEND_MESSAGES_IN_THREADS   | Send messages in threads                 |
+ * | 16 | USE_PUBLIC_THREADS         | Create public threads                    |
+ * | 17 | USE_PRIVATE_THREADS        | Create private threads                   |
+ * | 18 | EMBED_LINKS                | Embed links                              |
+ * | 19 | ATTACH_FILES               | Attach files                             |
+ * | 20 | ADD_REACTIONS              | Add reactions                            |
+ * | 21 | USE_EXTERNAL_EMOJIS        | Use external emojis                      |
+ * | 22 | USE_EXTERNAL_STICKERS      | Use External Stickers                    |
+ * | 23 | MENTION_EVERYONE           | Mention \@everyone, \@here and all roles |
+ * | 24 | MANAGE_MESSAGES            | Manage messages                          |
+ * | 25 | READ_MESSAGE_HISTORY       | Read message history                     |
+ * | 26 | SEND_TTS_MESSAGES          | Send text-to-speech messages             |
+ * | 27 | USE_APPLICATION_COMMANDS   | Use Application Commands                 |
+ * | 28 | CONNECT                    | Connect                                  |
+ * | 29 | SPEAK                      | Speak                                    |
+ * | 30 | STREAM                     | Video                                    |
+ * | 31 | USE_VAD                    | Use Voice Activity Detection             |
+ * | 32 | PRIORITY_SPEAKER           | Priority Speaker                         |
+ * | 33 | MUTE_MEMBERS               | Mute members                             |
+ * | 34 | DEAFEN_MEMBERS             | Defean members                           |
+ * | 35 | MOVE_MEMBERS               | Move members                             |
+ * | 36 | ADMINISTRATOR              | Administrator                            |
+ * | 37 | REQUEST_TO_SPEAK           | Request to speak                         |
+ * | 38 | MANAGE_THREADS             | Manage threads                           |
+ * | 39 | MANAGE_EVENTS              | Manage Events                            |
+ */
+export type DBMPermissionType =
+    | -1 | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+    | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19
+    | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29
+    | 30 | 31 | 32 | 33 | 34 | 35 | 36 | 37 | 38 | 39;
+// Could be optimized via a possible future numeric range type, see https://github.com/microsoft/TypeScript/issues/54925
+
+/**
+ * Permission string type
+ *
+ * | ID                         | Name                                     |
+ * |----------------------------|------------------------------------------|
+ * | NONE                       | No permission                            |
+ * | VIEW_CHANNEL               | View channels                            |
+ * | MANAGE_CHANNELS            | Manage channels                          |
+ * | MANAGE_ROLES               | Manage roles                             |
+ * | MANAGE_EMOJIS_AND_STICKERS | Manage emojis and stickers               |
+ * | VIEW_AUDIT_LOG             | View audit log                           |
+ * | VIEW_GUILD_INSIGHTS        | View Server Insights                     |
+ * | MANAGE_WEBHOOKS            | Manage webhooks                          |
+ * | MANAGE_GUILD               | Manage server                            |
+ * | CREATE_INSTANT_INVITE      | Create invite                            |
+ * | CHANGE_NICKNAME            | Change nickname                          |
+ * | MANAGE_NICKNAMES           | Manage nicknames                         |
+ * | KICK_MEMBERS               | Kick members                             |
+ * | BAN_MEMBERS                | Ban members                              |
+ * | MODERATE_MEMBERS           | Time out members                         |
+ * | SEND_MESSAGES              | Send messages                            |
+ * | SEND_MESSAGES_IN_THREADS   | Send messages in threads                 |
+ * | USE_PUBLIC_THREADS         | Create public threads                    |
+ * | USE_PRIVATE_THREADS        | Create private threads                   |
+ * | EMBED_LINKS                | Embed links                              |
+ * | ATTACH_FILES               | Attach files                             |
+ * | ADD_REACTIONS              | Add reactions                            |
+ * | USE_EXTERNAL_EMOJIS        | Use external emojis                      |
+ * | USE_EXTERNAL_STICKERS      | Use External Stickers                    |
+ * | MENTION_EVERYONE           | Mention \@everyone, \@here and all roles |
+ * | MANAGE_MESSAGES            | Manage messages                          |
+ * | READ_MESSAGE_HISTORY       | Read message history                     |
+ * | SEND_TTS_MESSAGES          | Send text-to-speech messages             |
+ * | USE_APPLICATION_COMMANDS   | Use Application Commands                 |
+ * | CONNECT                    | Connect                                  |
+ * | SPEAK                      | Speak                                    |
+ * | STREAM                     | Video                                    |
+ * | USE_VAD                    | Use Voice Activity Detection             |
+ * | PRIORITY_SPEAKER           | Priority Speaker                         |
+ * | MUTE_MEMBERS               | Mute members                             |
+ * | DEAFEN_MEMBERS             | Defean members                           |
+ * | MOVE_MEMBERS               | Move members                             |
+ * | ADMINISTRATOR              | Administrator                            |
+ * | REQUEST_TO_SPEAK           | Request to speak                         |
+ * | MANAGE_THREADS             | Manage threads                           |
+ * | MANAGE_EVENTS              | Manage Events                            |
+ */
+export type DBMPermissionStringType =
+    | "NONE"
+    | "VIEW_CHANNEL"
+    | "MANAGE_CHANNELS"
+    | "MANAGE_ROLES"
+    | "MANAGE_EMOJIS_AND_STICKERS"
+    | "VIEW_AUDIT_LOG"
+    | "VIEW_GUILD_INSIGHTS"
+    | "MANAGE_WEBHOOKS"
+    | "MANAGE_GUILD"
+    | "CREATE_INSTANT_INVITE"
+    | "CHANGE_NICKNAME"
+    | "MANAGE_NICKNAMES"
+    | "KICK_MEMBERS"
+    | "BAN_MEMBERS"
+    | "MODERATE_MEMBERS"
+    | "SEND_MESSAGES"
+    | "SEND_MESSAGES_IN_THREADS"
+    | "USE_PUBLIC_THREADS"
+    | "USE_PRIVATE_THREADS"
+    | "EMBED_LINKS"
+    | "ATTACH_FILES"
+    | "ADD_REACTIONS"
+    | "USE_EXTERNAL_EMOJIS"
+    | "USE_EXTERNAL_STICKERS"
+    | "MENTION_EVERYONE"
+    | "MANAGE_MESSAGES"
+    | "READ_MESSAGE_HISTORY"
+    | "SEND_TTS_MESSAGES"
+    | "USE_APPLICATION_COMMANDS"
+    | "CONNECT"
+    | "SPEAK"
+    | "STREAM"
+    | "USE_VAD"
+    | "PRIORITY_SPEAKER"
+    | "MUTE_MEMBERS"
+    | "DEAFEN_MEMBERS"
+    | "MOVE_MEMBERS"
+    | "ADMINISTRATOR"
+    | "REQUEST_TO_SPEAK"
+    | "MANAGE_THREADS"
+    | "MANAGE_EVENTS"
 
 /**
  * Internal permission type
@@ -366,7 +511,7 @@ export type DBMInternalPermissionType = 0 | 1 | 2;
 
 /**
  * Response mode for interactions
- * 
+ *
  * | ID            | Name                     |
  * |---------------|--------------------------|
  * | PERSONAL      | Once, Command User Only  |
@@ -492,7 +637,7 @@ export type DBMDataFileTypes =
 
 /**
  * Internal data type
- * 
+ *
  * | ID | Name    |
  * |----|---------|
  * | 0  | Command |
@@ -646,8 +791,8 @@ export interface DBMExtensionJSON {
 export interface DBMCommandJSON {
     _id: DBMCommandID;
     name: string;
-    permissions: string;
-    permissions2: string;
+    permissions: DBMPermissionStringType;
+    permissions2: DBMPermissionStringType;
     restriction: number;
     actions: DBMActionJSON[];
     comType: DBMCommandType;
