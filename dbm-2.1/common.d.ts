@@ -529,8 +529,17 @@ export type DBMActionResponseMode =
 
 /**
  * Creation mode for slash commands
+ *
+ * | ID           | Name                                                                      |
+ * |--------------|---------------------------------------------------------------------------|
+ * | auto         | Automatically Decide Based on Server Count                                |
+ * | all          | Make all Slash Commands Global                                            |
+ * | global       | Create all Slash Commands for every Server                                |
+ * | manual       | Create Slash Commands in Selected Servers Only, No Global                 |
+ * | manualglobal | Create Slash Commands in Selected Servers, and Use Global Everywhere Else |
  */
 export type DBMSlashCommandCreationMode =
+    | "auto"
     | "all"
     | "global"
     | "manual"
