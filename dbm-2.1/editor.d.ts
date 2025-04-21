@@ -298,9 +298,9 @@ export interface DBMEditorTranslationManager {
 }
 
 /**
- * Shared window
+ * Raw shared window
  */
-export interface DBMEditorSharedWindow extends Window {
+export interface DBMEditorRawSharedWindow {
     /** Global object */
     readonly glob: DBMEditorSharedGlobalObject;
     /** Translation manager */
@@ -388,6 +388,18 @@ export interface DBMEditorSharedWindow extends Window {
     globalGetRemote(): typeof import("@electron/remote");
 
     [x: string]: any;
+}
+
+/**
+ * Shared window
+ */
+export interface DBMEditorSharedWindow extends DBMEditorRawSharedWindow, Window {
+    /** Unrestricted action editor window */
+    readonly self: this & typeof globalThis;
+    /** Unrestricted action editor window */
+    readonly window: this & typeof globalThis;
+    /** Unrestricted action editor window */
+    readonly global: this & typeof globalThis;
 }
 
 /**
@@ -538,6 +550,16 @@ export interface DBMActionEditorWindow extends DBMEditorSharedWindow {
     getVarLuist(type: DBMVarType): [string, string][];
 
     [x: string]: any;
+}
+
+/**
+ * Action Editor: Restricted Window
+ */
+export interface DBMActionEditorRestrictedWindow {
+    /** Global object */
+    readonly glob: DBMActionEditorGlobalObject;
+    /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Window/document) */
+    readonly document: Document;
 }
 
 /**

@@ -15,7 +15,7 @@ import type {
 import type {
     DBMActionEditorFormatters,
     DBMActionEditorHTMLData,
-    DBMActionEditorWindow,
+    DBMActionEditorRestrictedWindow,
     DBMEditorModHelpers,
     DBMEditorPresetsInputNames,
     DBMExtensionEditorGlobalObject
@@ -150,7 +150,7 @@ export interface DBMAction extends DBMModule {
      *
      * @param this DBM action editor window
      */
-    init(this: DBMActionEditorWindow): void;
+    init(this: DBMActionEditorRestrictedWindow): void;
 
     /**
      * Action Editor On Save
