@@ -324,18 +324,25 @@ export interface DBMEditorRawSharedWindow {
      */
     globalGetPermissionsConfig(): DBMPermissionsConfig;
     /**
+     * Enable/disable shadow effect for window
+     * @param shadow Enable/disable flag
+     */
+    globalShadowWindow(shadow: boolean): void;
+    /**
      * Display alert message
      * @param message Message
+     * @param title Optional popup title
      * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/Window/alert}
      */
-    globalAlert(message: string): void;
+    globalAlert(message: string, title?: string): void;
     /**
      * Display confirmation message
      * @param message Message
+     * @param title Optional popup title
      * @returns Whether the OK (`true`) or Cancel (`false`) was selected
      * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/Window/confirm}
      */
-    globalConfirm(message: string): boolean;
+    globalConfirm(message: string, title?: string): boolean;
     /**
      * Get clipboard content
      * @returns Content (empty string if clipboard is empty)
