@@ -357,7 +357,7 @@ export interface DBMEditorSharedWindow extends Window {
      * @param options Window options
      * @param context Window context
      */
-    globalOpenWindow(path: string, options: DBMDialogOptions, context: unknown): void;
+    globalOpenWindow(path: string, options: DBMWindowOptions, context: unknown): void;
     /**
      * Open dialog
      * @param path Relative or path
