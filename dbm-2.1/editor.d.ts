@@ -1,3 +1,4 @@
+import { BrowserWindow } from "electron";
 import type {
     DBMVersion,
     DBMSimpleVersion,
@@ -376,6 +377,11 @@ export interface DBMEditorSharedWindow extends Window {
      */
     globalQuit(): void;
     /**
+     * Get Electron browser window
+     * @returns Browser window
+     */
+    globalGetWindow(): BrowserWindow;
+    /**
      * Get Electron remote
      * @returns Remote
      */
@@ -523,6 +529,13 @@ export interface DBMActionEditorWindow extends DBMEditorSharedWindow {
      * @returns Helpers
      */
     globalGetModHelpers(): DBMEditorModHelpers;
+
+    /**
+     * Get variable list for given type
+     * @param type Variable type
+     * @returns Variable list
+     */
+    getVarLuist(type: DBMVarType): [string, string][];
 
     [x: string]: any;
 }
