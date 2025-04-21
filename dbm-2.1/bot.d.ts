@@ -1,54 +1,12 @@
 import type {
-    DBMVersion,
-    DBMVarType,
-    DBMInternalVarType,
-    DBMSendTargetType,
-    DBMSendReplyTargetType,
-    DBMMemberType,
-    DBMMessageType,
-    DBMServerType,
-    DBMRoleType,
-    DBMChannelType,
-    DBMVoiceChannelType,
-    DBMAnyChannelType,
-    DBMListType,
-    DBMEventObjectType,
-    DBMEventType,
-    DBMSlashCommandCreationMode,
-    DBMUserVariableString,
-    DBMMemberVariableString,
-    DBMServerVariableString,
-    DBMMessageVariableString,
-    DBMTextChannelVariableString,
-    DBMVoiceChannelVariableString,
-    DBMRoleVariableString,
-    DBMEmojiVariableString,
-    DBMVariableString,
-    DBMDataFileTypes,
-    DBMConvertableItem,
-    DBMButtonData,
-    DBMSelectData,
-    DBMTextInputData,
-    DBMCommandID,
-    DBMActionJSON,
-    DBMActionBranchJSON,
-    DBMActionsCacheMetadata,
-    DBMCommandJSON,
-    DBMEventJSON,
-    DBMSettingsJSON
-} from "./common.d.ts";
+    AudioPlayer,
+    AudioResource,
+    PlayerSubscription,
+    VoiceConnection
+} from "@discordjs/voice";
 import type {
-    DBMAction, // eslint-disable-line @typescript-eslint/no-unused-vars
-    DBMEvent, // eslint-disable-line @typescript-eslint/no-unused-vars
-    DBMExtension // eslint-disable-line @typescript-eslint/no-unused-vars
-} from "./modules.d.ts";
-import type {
-    PickAsyncFunctions,
-    FixIndecesArray,
-    UnionObject,
-    OnceOrArray,
-    RegularOrDefault
-} from "./internal.d.ts";
+    GatewayDispatchPayload
+} from "discord-api-types/v9";
 import type {
     ApplicationCommandData,
     ApplicationCommandOptionData,
@@ -83,16 +41,58 @@ import type {
     UserContextMenuInteraction,
     VoiceBasedChannel,
 } from "discord.js-13";
-import type {
-    AudioPlayer,
-    AudioResource,
-    PlayerSubscription,
-    VoiceConnection
-} from "@discordjs/voice";
-import type {
-    GatewayDispatchPayload
-} from "discord-api-types/v9";
 import type Jimp from "jimp-0.22";
+import type {
+    DBMActionBranchJSON,
+    DBMActionJSON,
+    DBMActionsCacheMetadata,
+    DBMAnyChannelType,
+    DBMButtonData,
+    DBMChannelType,
+    DBMCommandID,
+    DBMCommandJSON,
+    DBMConvertableItem,
+    DBMDataFileTypes,
+    DBMEmojiVariableString,
+    DBMEventJSON,
+    DBMEventObjectType,
+    DBMEventType,
+    DBMInternalVarType,
+    DBMListType,
+    DBMMemberType,
+    DBMMemberVariableString,
+    DBMMessageType,
+    DBMMessageVariableString,
+    DBMRoleType,
+    DBMRoleVariableString,
+    DBMSelectData,
+    DBMSendReplyTargetType,
+    DBMSendTargetType,
+    DBMServerType,
+    DBMServerVariableString,
+    DBMSettingsJSON,
+    DBMSlashCommandCreationMode,
+    DBMTextChannelVariableString,
+    DBMTextInputData,
+    DBMUserVariableString,
+    DBMVariableString,
+    DBMVarType,
+    DBMVersion,
+    DBMVoiceChannelType,
+    DBMVoiceChannelVariableString
+} from "./common.d.ts";
+import type {
+    FixIndecesArray,
+    OnceOrArray,
+    PickAsyncFunctions,
+    RegularOrDefault,
+    UnionObject
+} from "./internal.d.ts";
+import type {
+    DBMAction, // eslint-disable-line @typescript-eslint/no-unused-vars
+    DBMEvent, // eslint-disable-line @typescript-eslint/no-unused-vars
+    DBMExtension // eslint-disable-line @typescript-eslint/no-unused-vars
+} from "./modules.d.ts";
 
 
 /**

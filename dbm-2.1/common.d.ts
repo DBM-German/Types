@@ -1,12 +1,12 @@
 import type {
-    RegularOrDefault
-} from "./internal.d.ts";
-import type {
     Snowflake
 } from "discord.js-13";
 import type {
     Package
 } from "normalize-package-data";
+import type {
+    RegularOrDefault
+} from "./internal.d.ts";
 
 
 /**

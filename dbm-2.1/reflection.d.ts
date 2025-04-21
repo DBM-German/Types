@@ -1,25 +1,25 @@
 import type {
-    DBMUserVariableString,
-    DBMMemberVariableString,
-    DBMServerVariableString,
-    DBMMessageVariableString,
-    DBMTextChannelVariableString,
-    DBMVoiceChannelVariableString,
-    DBMRoleVariableString,
-    DBMEmojiVariableString,
+    DBMConvertableItem,
     DBMDataAccess,
-    DBMConvertableItem
+    DBMEmojiVariableString,
+    DBMMemberVariableString,
+    DBMMessageVariableString,
+    DBMRoleVariableString,
+    DBMServerVariableString,
+    DBMTextChannelVariableString,
+    DBMUserVariableString,
+    DBMVoiceChannelVariableString
 } from "./common.d.ts";
 
 
-export type * as Discord from "discord.js-13";
-export type * as DiscordAPI from "discord-api-types/v9";
 export type * as DiscordVoice from "@discordjs/voice";
-export type { default as Jimp } from "jimp-0.22";
-export type { default as Ytdl } from "ytdl-core";
-export type * as YouTubeDL from "youtube-dl-exec";
-export type { default as Electron } from "electron";
 export type * as ElectronRemote from "@electron/remote";
+export type * as DiscordAPI from "discord-api-types/v9";
+export type * as Discord from "discord.js-13";
+export type { default as Electron } from "electron";
+export type { default as Jimp } from "jimp-0.22";
+export type * as YouTubeDL from "youtube-dl-exec";
+export type { default as Ytdl } from "ytdl-core";
 
 
 // Custom structures

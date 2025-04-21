@@ -1,21 +1,21 @@
 import type {
-    DBMVarType,
-    DBMActionJSON,
-    DBMActionMetadata,
-    DBMExtensionJSON,
-    DBMCommandJSON,
-    DBMEventJSON
-} from "./common.d.ts";
-import type {
     DBM,
-    DBMBot,
     DBMActions,
-    DBMActionsCache
+    DBMActionsCache,
+    DBMBot
 } from "./bot.d.ts";
 import type {
-    DBMActionEditorWindow,
-    DBMActionEditorHTMLData,
+    DBMActionJSON,
+    DBMActionMetadata,
+    DBMCommandJSON,
+    DBMEventJSON,
+    DBMExtensionJSON,
+    DBMVarType
+} from "./common.d.ts";
+import type {
     DBMActionEditorFormatters,
+    DBMActionEditorHTMLData,
+    DBMActionEditorWindow,
     DBMEditorModHelpers,
     DBMEditorPresetsInputNames,
     DBMExtensionEditorGlobalObject

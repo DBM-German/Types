@@ -3,6 +3,11 @@
         "editor.wordWrap": "off",
         "diffEditor.wordWrap": "off"
     },
+    "[typescript]": {
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": "always"
+        }
+    },
     "eslint.run": "onSave",
     "eslint.validate": ["javascript", "typescript", "markdown"],
     "eslint.format.enable": true,
